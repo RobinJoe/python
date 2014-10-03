@@ -1,0 +1,72 @@
+#! /bin/python
+
+import json
+import httplib2
+import re
+import sys
+
+def parsespec (specfile):
+  id_list = []
+  spec = open(specfile, 'r').readlines()
+  while not (spec[0].startswith('Chapter') | spec[0].startswith('Section') | spec[0].startswith('Part') | spec[0].startswith('Appendix') ):
+    # print "Removing: " + spec[0]
+    spec.pop(0)
+  for line in spec:
+    if not line.lstrip(' ').startswith('#') and re.search("[\[\]]", line):
+      output = re.search(r"\[(.+)\]", line)
+      id_list.append(output.group(1).split(',')[0])
+  return id_list
+
+# get the CLI args
+args = [];
+args = list(sys.argv);
+
+shell = args.pop(0);      # pop the shell command name
+
+if not args:
+  args = {'--help'};
+
+for checkhelp in args:
+  if checkhelp == "--help" or checkhelp == "-h":
+    print "Usage: skynet-search [searchterm] [id1] [id2] [id3]...";
+    exit ();
+
+if len(args) < 2:
+  print "Usage: skynet-search [searchterm] [id1] [id2] [id3]...";
+  exit ();
+else:
+  term = args.pop(0);     # set the search term/regex
+  specfile = args.pop(0)      # set the cspec file
+
+id_list = parsespec (specfile);
+
+print "Searching for \"" + term + "\" in " + specfile
+
+# Pfft, we don't need SSL validation!
+h = httplib2.Http(disable_ssl_certificate_validation=True);
+
+# Get the TopicID from each arg and use it to perform the search and replace
+count = 0
+for topicid in id_list:
+  resp, content = h.request('https://skynet.usersys.redhat.com:8443/pressgang-ccms/rest/1/topic/get/json/'+topicid+'/', method="GET");
+  if resp['status'] == '200':
+    obj = json.loads(content);
+    searchables = obj['xml'].rstrip().split('\n')
+    line = 0
+    for searchable in searchables:
+      line += 1
+      result = searchable.find(term);
+      if result != -1:
+        count += 1
+        searchable = searchable.lstrip(' ')
+        searchable = searchable.lstrip('\t')
+        # searchable = '\033[92m' + searchable + '\033[0m'
+        # searchable = re.sub (term, term, searchable)
+        print "Found in topic "+topicid+" on line " + str(line) +": " + searchable
+        print "---"
+
+  else:
+    print "Error: Invalid topic ID or faulty connection to SkyNet";
+    exit ();
+
+print "Total instances of '" + term + "' found: " + str(count)
