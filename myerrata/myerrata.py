@@ -2,7 +2,8 @@
 
 import sh
 
-NUM_TO_DISPLAY = 5
+num_to_display = int(raw_input('Number of bugs to display:  '))
+
 
 def open_bugs():
     try:
@@ -17,7 +18,7 @@ def open_bugs():
     while more_bugs == 'y':
         print('Opening the following bugs:')
 
-        for i in range(NUM_TO_DISPLAY):
+        for i in range(num_to_display):
             print buglist[0]
             bug = 'https://bugzilla.redhat.com/show_bug.cgi?id=' + buglist.pop(0)
             sh.firefox(bug)
