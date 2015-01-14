@@ -1,12 +1,19 @@
 #!/bin/python
+#----------------------------------------------------------
+# Takes doc text from a file or directly from the errata tool
+# and reorders the bugs numerically for each component.
+#----------------------------------------------------------
 
 import argparse
 import logging
+import requests
 import re
 from bs4 import BeautifulSoup
+from kb import KerberosTicket # there is a requests-kerberos pip package that probably does this better, but I was getting errors installing it on CSB
 
 #----------------------------------------------------------
 # hack to set the indent for prettify
+
 orig_prettify = BeautifulSoup.prettify
 r = re.compile(r'^(\s*)', re.MULTILINE)
 
@@ -31,47 +38,57 @@ def writeData(outfile, xml):  # writes XML to file
     except IOError as ioerr:
         logging.error('File error (writeData): ' + str(ioerr))
 
-def reorder(infile, outfile):
-    soup = BeautifulSoup(readData(infile), 'html.parser')
-    temp = {}
+#def fetchText(errata):
+#    url = 'https://errata.devel.redhat.com'
+#
+#    # kerberos stuff
+#
+#    docurl = url + '/docs/draft_release_notes_xml/' + errata
+#
+#    r = requests.get(docurl, verify=False)
+#    soup = BeautifulSoup(r.text, from_encoding='utf-8').textarea
+#    print soup
 
-    #can this not be accomplished more efficiently using arrays in place of dicts?  This would also have the benefit of keeping the titles in order.  Although perhaps those should be sorted alphabetically.
+def reorder(infile, outfile, replace):  # reorder bugs numerically then print the result or write to file
+    soup = BeautifulSoup(readData(infile), 'html.parser')
+    temp = []
 
     for variablelist in soup('variablelist'):
-        subtemp = {}
+        temp.append('<variablelist>' + str(variablelist.title))
+        subtemp = []
         for varlistentry in variablelist('varlistentry'):
-            subtemp[str(varlistentry.term)] = varlistentry
-        temp[variablelist.title] = subtemp
+            subtemp.append(str(varlistentry))
+        subtemp.sort()
+        for bug in subtemp:
+            temp.append(bug)
+        temp.append('</variablelist>')
 
-    newsoup = BeautifulSoup('', 'html.parser')
-    order = []
-
+    outputstring = ''
     for item in temp:
-        order.append('<variablelist>')
-        order.append(item)
-        for key in sorted(temp[item]):
-            order.append(temp[item][key])
-        order.append('</variablelist>')
-
-    for item in order:
-        newsoup.append(item)
-
-    outputstring = str(newsoup).strip()
-    outputstring = outputstring.replace("\n","")
+        outputstring = outputstring + item
+    outputstring = re.sub('\n+', '\n', outputstring)
 
     newsoup = BeautifulSoup(outputstring, 'html.parser')
 
-    writeData(outfile, newsoup.prettify(formatter=None, indent_width=2))
+    if outfile:
+        writeData(outfile, newsoup.prettify(formatter=None, indent_width=2))
+    elif replace:
+        writeData(infile, newsoup.prettify(formatter=None, indent_width=2))
+    else:
+        print newsoup.prettify(formatter=None, indent_width=2)
 
 #----------------------------------------------------------
 # main
 
 def main():
+    logConfig()
     parser = argparse.ArgumentParser(prog="numerate", description="Order errata bugs numerically.")
     parser.add_argument('INPUT', type=str, help='input file')
-    parser.add_argument('OUTPUT', type=str, help='output file')
+    parser.add_argument('OUTPUT', type=str, nargs='?', default=None, help='output file')
+    parser.add_argument('-r', '--replace', action='store_true', default=False, help='reorder bugs in input file')
     args = parser.parse_args()
-    reorder(args.INPUT, args.OUTPUT)
+    #fetchText('19347')
+    reorder(args.INPUT, args.OUTPUT, args.replace)
 
 #===========================================================
 # Logging Configuration
