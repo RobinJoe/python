@@ -7,6 +7,7 @@
 import argparse
 import logging
 import requests
+import subprocess
 import re
 from bs4 import BeautifulSoup
 from kb import KerberosTicket # there is a requests-kerberos pip package that probably does this better, but I was getting errors installing it on CSB
@@ -38,19 +39,36 @@ def writeData(outfile, xml):  # writes XML to file
     except IOError as ioerr:
         logging.error('File error (writeData): ' + str(ioerr))
 
-#def fetchText(errata):
-#    url = 'https://errata.devel.redhat.com'
-#
-#    # kerberos stuff
-#
-#    docurl = url + '/docs/draft_release_notes_xml/' + errata
-#
-#    r = requests.get(docurl, verify=False)
-#    soup = BeautifulSoup(r.text, from_encoding='utf-8').textarea
-#    print soup
+def isInt(string):
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
 
-def reorder(infile, outfile, replace):  # reorder bugs numerically then print the result or write to file
-    soup = BeautifulSoup(readData(infile), 'html.parser')
+def cleanScreen(string):
+    # removes whitespace between <screen> tags and swaps invalid characters for valid XML codes
+    command = '/home/bmoss/scripts/python/numerate/cleanscreen.sh ' + string
+    subprocess.call(command)
+    logging.debug(string)
+    return string
+
+def fetchText(errata): # fetches doc text from the errata tool
+    kbsource = 'HTTP@errata.devel.redhat.com'
+    url = 'https://errata.devel.redhat.com/docs/draft_release_notes_xml/' + errata
+
+    krb = KerberosTicket(kbsource)
+    headers = {"Authorization": krb.auth_header}
+    r = requests.get(url, headers=headers, verify=False)
+    soup = BeautifulSoup(cleanScreen(r.text), 'html.parser').find(id="publican_xml_snippet")
+    return soup
+
+def reorder(infile, outfile, replace):
+    # reorder bugs numerically then print the result or write to file
+    if isInt(infile):
+        soup = fetchText(infile)
+    else:
+        soup = BeautifulSoup(cleanScreen(readData(infile)), 'html.parser')
     temp = []
 
     for variablelist in soup('variablelist'):
@@ -83,11 +101,10 @@ def reorder(infile, outfile, replace):  # reorder bugs numerically then print th
 def main():
     logConfig()
     parser = argparse.ArgumentParser(prog="numerate", description="Order errata bugs numerically.")
-    parser.add_argument('INPUT', type=str, help='input file')
+    parser.add_argument('INPUT', type=str, help='input XML file or errata number')
     parser.add_argument('OUTPUT', type=str, nargs='?', default=None, help='output file')
-    parser.add_argument('-r', '--replace', action='store_true', default=False, help='reorder bugs in input file')
+    parser.add_argument('-r', '--replace', action='store_true', default=False, help='reorder bugs in input XML file')
     args = parser.parse_args()
-    #fetchText('19347')
     reorder(args.INPUT, args.OUTPUT, args.replace)
 
 #===========================================================
@@ -96,9 +113,9 @@ def main():
 def logConfig():
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S'),
-                        #filename='/home/bmoss/code/python/cricket/output.log',
-                        #filemode='w')
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        filename='/home/bmoss/scripts/python/numerate/debug.log',
+                        filemode='w')
 
 #===========================================================
 
