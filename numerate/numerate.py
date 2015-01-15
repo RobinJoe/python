@@ -7,7 +7,6 @@
 import argparse
 import logging
 import requests
-import subprocess
 import re
 from bs4 import BeautifulSoup
 from kb import KerberosTicket # there is a requests-kerberos pip package that probably does this better, but I was getting errors installing it on CSB
@@ -46,11 +45,14 @@ def isInt(string):
     except ValueError:
         return False
 
-def cleanScreen(string):
+def cleanXML(string):
     # removes whitespace between <screen> tags and swaps invalid characters for valid XML codes
-    command = '/home/bmoss/scripts/python/numerate/cleanscreen.sh ' + string
-    subprocess.call(command)
-    logging.debug(string)
+    string = re.sub('<screen>\n', '<screen>', string)
+    string = re.sub("`", "'", string)
+    string = re.sub('C&U', 'C&amp;U', string)
+    string = re.sub(' & ', ' and ', string)
+    string = re.sub(' #<', ' &lt;', string)
+    #logging.debug(string)
     return string
 
 def fetchText(errata): # fetches doc text from the errata tool
@@ -60,7 +62,7 @@ def fetchText(errata): # fetches doc text from the errata tool
     krb = KerberosTicket(kbsource)
     headers = {"Authorization": krb.auth_header}
     r = requests.get(url, headers=headers, verify=False)
-    soup = BeautifulSoup(cleanScreen(r.text), 'html.parser').find(id="publican_xml_snippet")
+    soup = BeautifulSoup(cleanXML(r.text), 'html.parser').find(id="publican_xml_snippet")
     return soup
 
 def reorder(infile, outfile, replace):
@@ -68,7 +70,7 @@ def reorder(infile, outfile, replace):
     if isInt(infile):
         soup = fetchText(infile)
     else:
-        soup = BeautifulSoup(cleanScreen(readData(infile)), 'html.parser')
+        soup = BeautifulSoup(cleanXML(readData(infile)), 'html.parser')
     temp = []
 
     for variablelist in soup('variablelist'):
