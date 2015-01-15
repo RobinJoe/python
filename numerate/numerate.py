@@ -45,15 +45,16 @@ def isInt(string):
     except ValueError:
         return False
 
-def cleanXML(string):
-    # removes whitespace between <screen> tags and swaps invalid characters for valid XML codes
-    string = re.sub('<screen>\n', '<screen>', string)
-    string = re.sub('<screen>\t', '<screen>', string)
+def precleanXML(string):
+    # removes extra whitespace
+    string = re.sub(' \s+', ' ', string)
+    return string
+
+def postcleanXML(string):
+    # swaps invalid characters for valid XML codes
     string = re.sub("`", "'", string)
-    string = re.sub('C&U', 'C&amp;U', string)
+    string = re.sub('C&U;', 'C&amp;U', string)
     string = re.sub(' & ', ' and ', string)
-    string = re.sub(' \s+', '', string)
-    logging.debug(string)
     return string
 
 def fetchText(errata): # fetches doc text from the errata tool
@@ -88,17 +89,18 @@ def reorder(infile, outfile, replace):
     for item in temp:
         outputstring = outputstring + item
 
-    newsoup = BeautifulSoup(cleanXML(outputstring), 'html.parser')
-     
+    newsoup = BeautifulSoup(precleanXML(outputstring), 'html.parser')
+    outputstring = postcleanXML(newsoup.prettify(formatter=None, indent_width=2))
+         
     if outfile:
-        writeData(outfile, newsoup.prettify(formatter=None, indent_width=2))
+        writeData(outfile, outputstring)
     elif replace:
-        writeData(infile, newsoup.prettify(formatter=None, indent_width=2))
+        writeData(infile, outputstring)
     else:
-        print newsoup.prettify(formatter='xml', indent_width=2)
+        print outputstring
     
     # For testing
-    #return newsoup.prettify(formatter=None, indent_width=2)
+    #return outputstring
 
 #----------------------------------------------------------
 # main
