@@ -48,11 +48,12 @@ def isInt(string):
 def cleanXML(string):
     # removes whitespace between <screen> tags and swaps invalid characters for valid XML codes
     string = re.sub('<screen>\n', '<screen>', string)
+    string = re.sub('<screen>\t', '<screen>', string)
     string = re.sub("`", "'", string)
     string = re.sub('C&U', 'C&amp;U', string)
     string = re.sub(' & ', ' and ', string)
-    string = re.sub(' #<', ' &lt;', string)
-    #logging.debug(string)
+    string = re.sub(' \s+', '', string)
+    logging.debug(string)
     return string
 
 def fetchText(errata): # fetches doc text from the errata tool
@@ -62,7 +63,7 @@ def fetchText(errata): # fetches doc text from the errata tool
     krb = KerberosTicket(kbsource)
     headers = {"Authorization": krb.auth_header}
     r = requests.get(url, headers=headers, verify=False)
-    soup = BeautifulSoup(cleanXML(r.text), 'html.parser').find(id="publican_xml_snippet")
+    soup = BeautifulSoup(r.text, 'html.parser').find(id="publican_xml_snippet")
     return soup
 
 def reorder(infile, outfile, replace):
@@ -70,7 +71,7 @@ def reorder(infile, outfile, replace):
     if isInt(infile):
         soup = fetchText(infile)
     else:
-        soup = BeautifulSoup(cleanXML(readData(infile)), 'html.parser')
+        soup = BeautifulSoup(readData(infile), 'html.parser')
     temp = []
 
     for variablelist in soup('variablelist'):
@@ -86,16 +87,18 @@ def reorder(infile, outfile, replace):
     outputstring = ''
     for item in temp:
         outputstring = outputstring + item
-    outputstring = re.sub('\n+', '\n', outputstring)
 
-    newsoup = BeautifulSoup(outputstring, 'html.parser')
-
+    newsoup = BeautifulSoup(cleanXML(outputstring), 'html.parser')
+     
     if outfile:
         writeData(outfile, newsoup.prettify(formatter=None, indent_width=2))
     elif replace:
         writeData(infile, newsoup.prettify(formatter=None, indent_width=2))
     else:
-        print newsoup.prettify(formatter=None, indent_width=2)
+        print newsoup.prettify(formatter='xml', indent_width=2)
+    
+    # For testing
+    #return newsoup.prettify(formatter=None, indent_width=2)
 
 #----------------------------------------------------------
 # main
