@@ -46,21 +46,26 @@ def isInt(string):
         return False
 
 def precleanXML(string):
-    # removes extra whitespace
-    string = re.sub(' \s+', ' ', string)
+    # removes extra spaces
+    string = re.sub(' +', ' ', string)
     return string
 
 def postcleanXML(string):
-    # swaps invalid characters for valid XML codes
+    # swaps invalid characters for valid XML codes and extra whitespace in <screen> tags
     string = re.sub("`", "'", string)
     string = re.sub('C&U;', 'C&amp;U', string)
     string = re.sub(' & ', ' and ', string)
+    string = re.sub('\r', '', string)
+    string = re.sub('\t', '', string)
+    string = re.sub('\n+', '\n', string)
+    string = re.sub('\n ', '\n', string)
+    string = re.sub('<screen>\s*', '<screen>', string)
+    string = re.sub('\s*</screen>', '</screen>', string)
     return string
 
 def fetchText(errata): # fetches doc text from the errata tool
     kbsource = 'HTTP@errata.devel.redhat.com'
     url = 'https://errata.devel.redhat.com/docs/draft_release_notes_xml/' + errata
-
     krb = KerberosTicket(kbsource)
     headers = {"Authorization": krb.auth_header}
     r = requests.get(url, headers=headers, verify=False)
@@ -73,6 +78,8 @@ def reorder(infile, outfile, replace):
         soup = fetchText(infile)
     else:
         soup = BeautifulSoup(readData(infile), 'html.parser')
+    logging.debug(soup)
+
     temp = []
 
     for variablelist in soup('variablelist'):
@@ -91,16 +98,16 @@ def reorder(infile, outfile, replace):
 
     newsoup = BeautifulSoup(precleanXML(outputstring), 'html.parser')
     outputstring = postcleanXML(newsoup.prettify(formatter=None, indent_width=2))
-         
+
     if outfile:
         writeData(outfile, outputstring)
     elif replace:
         writeData(infile, outputstring)
     else:
         print outputstring
-    
+
     # For testing
-    #return outputstring
+    return outputstring
 
 #----------------------------------------------------------
 # main
