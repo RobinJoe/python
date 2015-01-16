@@ -1,0 +1,70 @@
+<variablelist>
+  <title>
+    Automate
+  </title>
+  <varlistentry>
+    <term>
+      BZ#
+      <ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1161265">
+        1161265
+      </ulink>
+    </term>
+    <listitem>
+      <para>
+        <screen>
+          AAA
+        </screen>
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>
+      BZ#
+      <ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1162832">
+        1162832
+      </ulink>
+    </term>
+    <listitem>
+      <para>
+        <screen>
+          BBB and CCC  C&U  this ' and ' that \<\;code
+        </screen>
+      </para>
+    </listitem>
+  </varlistentry>
+</variablelist>
+<variablelist>
+  <title>
+    Appliance
+  </title>
+  <varlistentry>
+    <term>
+      BZ#
+      <ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1102724">
+        1102724
+      </ulink>
+    </term>
+    <listitem>
+      <para>
+        <screen>
+          AAA
+        </screen>
+      </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry>
+    <term>
+      BZ#
+      <ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1164032">
+        1164032
+      </ulink>
+    </term>
+    <listitem>
+      <para>
+        <screen>
+          BBB
+        </screen>
+      </para>
+    </listitem>
+  </varlistentry>
+</variablelist>
