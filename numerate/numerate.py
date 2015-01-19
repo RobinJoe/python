@@ -51,7 +51,7 @@ def precleanXML(string):
     return string
 
 def postcleanXML(string):
-    # swaps invalid characters for valid XML codes and extra whitespace in <screen> tags
+    # swaps invalid characters for valid XML codes and removes extra whitespace in <screen> tags
     string = re.sub("`", "'", string)
     string = re.sub('C&U;', 'C&amp;U', string)
     string = re.sub(' & ', ' and ', string)
@@ -62,6 +62,12 @@ def postcleanXML(string):
     string = re.sub('<screen>\s*', '<screen>', string)
     string = re.sub('\s*</screen>', '</screen>', string)
     return string
+
+def stringFromList(array):
+    outputstring = ''
+    for item in array:
+        outputstring = outputstring + item
+    return outputstring
 
 def fetchText(errata): # fetches doc text from the errata tool
     kbsource = 'HTTP@errata.devel.redhat.com'
@@ -81,7 +87,14 @@ def reorder(infile, outfile, replace):
     logging.debug(soup)
 
     temp = []
-
+    
+    for variablelist in soup('variablelist'):
+        temp.append(str(variablelist))
+    temp.sort()
+    soup = BeautifulSoup(stringFromList(temp), 'html.parser')
+    
+    temp = []
+  
     for variablelist in soup('variablelist'):
         temp.append('<variablelist>' + str(variablelist.title))
         subtemp = []
@@ -92,11 +105,7 @@ def reorder(infile, outfile, replace):
             temp.append(bug)
         temp.append('</variablelist>')
 
-    outputstring = ''
-    for item in temp:
-        outputstring = outputstring + item
-
-    newsoup = BeautifulSoup(precleanXML(outputstring), 'html.parser')
+    newsoup = BeautifulSoup(precleanXML(stringFromList(temp)), 'html.parser')
     outputstring = postcleanXML(newsoup.prettify(formatter=None, indent_width=2))
 
     if outfile:
@@ -134,4 +143,4 @@ def logConfig():
 #===========================================================
 
 if __name__ == '__main__':
-	main()
+        main()

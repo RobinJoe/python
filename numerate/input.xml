@@ -1,78 +1,21 @@
 		<variablelist>
-			<title>Appliance</title>
+			<title>Vulnerability</title>
 			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1171343">1171343</ulink></term>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1157881">1157881</ulink></term>
 				<listitem>
 					<para>
 <screen>
-Policy_events are not allowing the cluster to delete and the operation times out.
-
-Added purger for policy_events - PurgerMixin has been created as a set of common methods from all of the other purgers. Also added scheduler methods for purging policy_events. These changes have now resolved the issue and there is no longer a timeout.
+BBB
 </screen>
 					</para>
 				</listitem>
 			</varlistentry>
 			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1157807">1157807</ulink></term>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1151258">1151258</ulink></term>
 				<listitem>
 					<para>
 <screen>
-Need to support seeding of service dialogs with an appliance, similar to how provisioning dialogs and other resources are supplied.
-
-Updated code to support seeding of Dialogs
-Also,
--Moved MiqDialog yaml seed files to product/dialogs/miq_dialogs
--Refactored spec to use fixture file and seed MiqRegion
-
-These changes have fixed the issue; service dialogs delivered with the appliance can now be seeded into the database.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1102724">1102724</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In Config &gt; Configuration &gt; Red Hat Updates &gt; Edit registration, attempting to register an appliance using http proxy failed.
-
-Code has been updated to fetch the correct authentication type; this has now resolved the issue.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1170780">1170780</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Categories were updated so that the user can not change the default settings for default categories. However even after re-adding a category, the category reverted back to default settings such as multi-value.
-
-Removed updating categories so users can redefine the defaults. This has now fixed the issue.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1168272">1168272</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Repository status was not getting updated. On registration (both RHSM and Sat5), Update Status got stuck at Unsubscribed even though the channels set in Repository Name field were successfully enabled.
-
-[MiqServer][Update Management] Code updated to ensure that repo status is updated after enabling channels set in Repository Name. This has now resolved the issue and the repository status is correctly updated.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1161272">1161272</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Connection to RHEVM using SSLv3 was disabled by customers to protect from the POODLE attack. As a result, there was no communication with RHEVM.
-
-Code has been updated to access RHEVM with TLSv1 and above. This has now resolved the issue and communication with RHEV functions normally.
+AAA
 </screen>
 					</para>
 				</listitem>
@@ -85,9 +28,7 @@ Code has been updated to access RHEVM with TLSv1 and above. This has now resolve
 				<listitem>
 					<para>
 <screen>
-When attempting to use a button on a VM/Instance, that is trying to load a dynamic drop down, a dialog will not display.
-
-Added missing route "dynamic_list_refresh" to various controllers. This has now fixed the issue as it displays the dialog correctly and is able to run the method.
+AAA
 </screen>
 					</para>
 				</listitem>
@@ -97,130 +38,7 @@ Added missing route "dynamic_list_refresh" to various controllers. This has now 
 				<listitem>
 					<para>
 <screen>
-Openstack allows you to create multiple security groups with the same name, but provisioning with CFME fails when selecting one of the security groups with the same name. CFME now uses Security Group ems_ref instead of name since that is guaranteed unique. Provisioning succeeds as expected.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1164035">1164035</ulink></term>
-				<listitem>
-					<para>
-<screen>
-This user message enhancement enables custom messages to be set for the progression of the state machine and its success or failure. Currently, the automation engine provides default messaging for the progression of the state machine and its success or failure. The default messaging is used if the user_message is not specified.
-If the user_message is specified at any point in the state machine, the user determines either to supply the user_messages from that point forward, or to clear the user_message field and revert back to the default messaging behavior.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1162832">1162832</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Extended CreateAutomationRequest to accept the zone as a parameter, and extended the automation code to run automation tasks only on an appliance that is in the specified zone. Due to firewall constraints, only CloudForms appliances in the correct CloudForms zone are able to access ESX hosts, and it was a requirement to run automation tasks on one of these appliances, but not anywhere else.
-
-
-Result: The required zone can be specified in the "parameters" being passed to CreateAutomationRequest. The attribute name is called miq_zone
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1179957">1179957</ulink></term>
-				<listitem>
-					<para>
-<screen>
-'fileutils' is missing at the the top of the method. When ose_installer attempts to create the directory for the @oseTemplatePath it fails with the following error: 'NameError: uninitialized constant FileUtils'. Added requirement for 'fileutils' to the top of the method and the ose_installer creates the directory as expected.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1170682">1170682</ulink></term>
-				<listitem>
-					<para>
-<screen>
-A broken VM reference in the snapshot service model caused the Automate method for reverting a vm's snapshot to fail. The reference has been fixed, and the method works as expected.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-		<variablelist>
-			<title>Control</title>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1165214">1165214</ulink></term>
-				<listitem>
-					<para>
-<screen>
-The vm_create policy event cannot be raised when the event is captured because there is no object in the system representing the VM at that time.  Instead the event is raised as part of the post-create actions for a VM.  In the case of cloud VMs this event was never being raised because of a check for a valid host associated with the VM.  This check has been corrected.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-		<variablelist>
-			<title>Insight</title>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1153784">1153784</ulink></term>
-				<listitem>
-					<para>
-<screen>
-A race condition in the SmartProxy code caused a "File exists - /var/www/miq/vmdb/data/metadata" error while performing a SmartState Analysis. The race condition has been corrected, and SmartState Analysis succeeds.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1165305">1165305</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, the Open Stack inventory collection code produced an error when a volume attached to an instance was not visible in the tenants associated with the OpenStack user account. This issue was fixed by recognising this as a valid condition and logging a message that the volume could not be accessed, instead of generating an error. The error is no longer generated in the new version of CloudForms Management Engine, although the volume's inventory data remains uncollected and the link to the instance is not set.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1162735">1162735</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, a custom widget with visibility limited to selected groups was not accessible to any group. This was because the widget availability code did not check for group visibility, only role visibility. This issue was fixed by changing the visibility code to check for accessibility by both groups and roles. Widgets visibility can now be limited to selected groups as expected.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1161267">1161267</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Scan profile file wildcards were not interpreted due to an error processing empty files. This caused scan profiles set to collect /etc/*.conf files resulting in nothing being collected despite files matching that regex. Empty files are now processed properly during analysis, and results are collected correctly.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-		</variablelist>
-		<variablelist>
-			<title>vulnerability</title>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1157881">1157881</ulink></term>
-				<listitem>
-					<para>
-<screen>
-It was found that CloudForms Management Engine exposed SQL filters via the REST API without any input escaping. An authenticated user could use this flaw to perform SQL injection attacks against the CloudForms Management Engine database.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1151258">1151258</ulink></term>
-				<listitem>
-					<para>
-<screen>
-It was found that the CloudForms Management Engine customization template used a default root password for newly created images if no root password was specified.
+BBB
 </screen>
 					</para>
 				</listitem>
@@ -233,7 +51,7 @@ It was found that the CloudForms Management Engine customization template used a
 				<listitem>
 					<para>
 <screen>
-Passwords that have been submitted to the CFME database are retrievable in the UI and are obfuscated with asterisks. However, when viewing the HTML source the passwords are visible in plain text. Passwords are no longer passed to HTML forms, and cannot be viewed in the source.
+BBB
 </screen>
 					</para>
 				</listitem>
@@ -243,129 +61,32 @@ Passwords that have been submitted to the CFME database are retrievable in the U
 				<listitem>
 					<para>
 <screen>
-In the earlier version of CloudForms Management Engine, the administrator was not able to edit the default appliance zone. This was because editing the default appliance zone description was disabled. This was fixed by changing the code to allow the default appliance zone description to be changed. The administrator is now able to change the default appliance zone description in the new version of CloudForms Management Engine.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1162806">1162806</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, uploading a sys-prep answer file to provision a Windows virtual machine resulted in bugs with rendering provisioning dialog form components (such as the submit button). Additionally, the layout abruptly changed from explorer to non-explorer. This resulted in an inability to provision virtual machines. This issue was fixed by correcting the rendering bugs that were seen after uploading the sys-prep answer file. The provisioning dialog form renders correctly and the user is able to provision virtual machines using a sys-prep answer file in the new version of CloudForms Management Engine.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1161761">1161761</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, an error occurred when trying to edit input parameters for a method in the Automate Explorer. This was due to an incorrect data type assigned to the Automate method input parameters field. This was fixed by changing the data type for the Automate method input parameters field to be 'string'. The Administrator is now able to edit Automate methods as expected.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1166214">1166214</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, provisioning a virtual machine never finished if a callback URL was called during provisioning. This was due to missing routing information for the callback URL. This was fixed by adding the missing routing information. Administrators are now able to provision virtual machines when using the callback feature.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1166215">1166215</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, an error was presented in the Explorer when selecting the check all option in the Storage menu item under Assignments under the Chargeback main menu item. This was due to an incorrect call to a method that applied only to the Chargeback Rates accordion was being called in the Explorer. This was fixed by hiding the paging controls in the Chargeback Explorer menu item. No errors are presented in the Storage menu item under Assignments under the Chargeback main menu item in the new version of CloudForms Management Engine.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1123955">1123955</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Validating credentials for a Netapp Storage Manager caused the CloudForms Management Engine to add the manager without a name. This fix prevents CloudForms Management Engine from creating the Storage Manager during validation.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1168282">1168282</ulink></term>
-				<listitem>
-					<para>
-<screen>
-The Red Hat Updates page did not filter Appliances by Region and showed Appliances that should not be displayed. This fix adds code to filter by Region on Red Hat Updates page. Now the page only displays applicable Appliances.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1158928">1158928</ulink></term>
-				<listitem>
-					<para>
-<screen>
-CloudForms previously disallowed empty display names for an instance. As a result, you could not reset instance names by blanking them out. This fix allows users to save empty display name for an instance. Now users can blank out instance name.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1164034">1164034</ulink></term>
-				<listitem>
-					<para>
-<screen>
-The array that stored the reports (the children) for a particular Report tree node stored nil values in the absence of the corresponding report records. Attempts to view Performance by Asset Type report as user Admin resulted in an error. This fix populates the Reports tree children for a node only if reports exists. No error appears when attempting to view Performance by Asset Type reports.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1163384">1163384</ulink></term>
-				<listitem>
-					<para>
-<screen>
-In the earlier version of CloudForms Management Engine, an error occurred after attempting to add a new forest in the trusted forest settings box, when configuring LDAP authentication for the appliance. This was due to missing route information for handling the action to add a new forest. This bug was fixed by adding the missing route information. The administrator is now able to add a new forest when configuring LDAP authentication for the appliance.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1170794">1170794</ulink></term>
-				<listitem>
-					<para>
-<screen>
-Trending reports do not have columns like regular reports. This meant users were unable to create a widget from a trending report. This fix adds logic to display "No Widget compatible Reports found" when filtering by trending reports in widget editor. Now users can not longer select trending reports for a widget.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1163024">1163024</ulink></term>
-				<listitem>
-					<para>
-<screen>
-When a Chargeback Report had no data, an error appeared when selecting "Show Full Screen Report" under Chargeback -&gt; Reports. This fix disables report download buttons when no records are available. This stops the error from appearing.
-</screen>
-					</para>
-				</listitem>
-			</varlistentry>
-			<varlistentry>
-				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1160879">1160879</ulink></term>
-				<listitem>
-					<para>
-<screen>
-The Reports Editor was missing "Cloud/Infrastructure Provider.My Company Tags: *" fields when adding a Hosts report. This fix adds ExtManagementSystem to the TAG_CLASSES list, which results in "Cloud/Infrastructure Provider.My Company Tags: *" appearing in Available Fields.
+AAA
 </screen>
 					</para>
 				</listitem>
 			</varlistentry>
 		</variablelist>
+		<variablelist>
+			<title>Appliance</title>
+			<varlistentry>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1171343">1171343</ulink></term>
+				<listitem>
+					<para>
+<screen>
+BBB
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1161272">1161272</ulink></term>
+				<listitem>
+					<para>
+<screen>
+AAA
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>		
