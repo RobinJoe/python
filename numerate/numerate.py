@@ -87,14 +87,14 @@ def reorder(infile, outfile, replace):
     logging.debug(soup)
 
     temp = []
-    
+
     for variablelist in soup('variablelist'):
         temp.append(str(variablelist))
     temp.sort()
     soup = BeautifulSoup(stringFromList(temp), 'html.parser')
-    
+
     temp = []
-  
+
     for variablelist in soup('variablelist'):
         temp.append('<variablelist>' + str(variablelist.title))
         subtemp = []
