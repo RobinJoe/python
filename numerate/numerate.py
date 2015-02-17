@@ -1,13 +1,15 @@
 #!/bin/python
 #----------------------------------------------------------
-# Takes doc text from a file or directly from the errata tool
-# and reorders the bugs numerically for each component.
+# Takes doc text from a file or directly from the errata
+# tool, cleans the tags and invalid characters, and
+# reorders the bugs numerically for each component.
 #----------------------------------------------------------
 
 import argparse
 import logging
 import requests
 import re
+from os import getcwd, path
 from bs4 import BeautifulSoup
 from kb import KerberosTicket # there is a requests-kerberos pip package that probably does this better, but I was getting errors installing it on CSB
 
@@ -24,6 +26,7 @@ BeautifulSoup.prettify = prettify
 #----------------------------------------------------------
 
 def readData(infile):  # reads XML from file
+    infile = path.realpath(infile)
     try:
         with open(infile, 'rb') as f:
             xml = f.read()
@@ -32,6 +35,7 @@ def readData(infile):  # reads XML from file
     return xml
 
 def writeData(outfile, xml):  # writes XML to file
+    outfile = path.realpath(outfile)
     try:
         with open(outfile, 'wb') as f:
             f.write(xml)
@@ -123,7 +127,7 @@ def reorder(infile, outfile, replace):
 
 def main():
     logConfig()
-    parser = argparse.ArgumentParser(prog="numerate", description="Order errata bugs numerically.")
+    parser = argparse.ArgumentParser(prog="numerate", description="Clean tags and invalid characters, then order errata bugs numerically.")
     parser.add_argument('INPUT', type=str, help='input XML file or errata number')
     parser.add_argument('OUTPUT', type=str, nargs='?', default=None, help='output file')
     parser.add_argument('-r', '--replace', action='store_true', default=False, help='reorder bugs in input XML file')
