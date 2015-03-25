@@ -1,0 +1,59 @@
+		<variablelist>
+			<title>Automate</title>
+			<varlistentry>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1161265">1161265</ulink></term>
+				<listitem>
+					<para>
+<screen>
+AAA
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<variablelist>
+			<title>WebUI</title>
+			<varlistentry>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1145304">1145304</ulink></term>
+				<listitem>
+					<para>
+<screen>
+BBB
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>BZ#<ulink url="https://access.redhat.com/documentation/en-US/Red_Hat_CloudForms/3.1/html/Management_Engine_5.3_Guide/index.html">1098305</ulink></term>
+				<listitem>
+					<para>
+<screen>
+AAA
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>
+		<variablelist>
+			<title>Appliance</title>
+			<varlistentry>
+				<term>BZ#<ulink url="https://bugzilla.redhat.com/show_bug.cgi?id=1171343">1171343</ulink></term>
+				<listitem>
+					<para>
+<screen>
+BBB
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+			<varlistentry>
+				<term>BZ#<ulink url="https://access.redhat.com/documentation/en-US/Red_Hat_CloudForms/3.2/html/Management_Engine_5.3_Control_Guide/index.html">1161272</ulink></term>
+				<listitem>
+					<para>
+<screen>
+AAA
+</screen>
+					</para>
+				</listitem>
+			</varlistentry>
+		</variablelist>

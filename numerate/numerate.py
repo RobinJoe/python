@@ -9,7 +9,7 @@ import argparse
 import logging
 import requests
 import re
-from os import getcwd, path
+from os import path
 from bs4 import BeautifulSoup
 from kb import KerberosTicket # there is a requests-kerberos pip package that probably does this better, but I was getting errors installing it on CSB
 
