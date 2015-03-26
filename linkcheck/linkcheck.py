@@ -57,7 +57,7 @@ def checklinks(infile, count, total, verbose):
                 badcount += 1
             if verbose: print("Status: " + status + ENDCOLOR)
         except Exception as e:
-            print(e)
+            print("Warning: " + str(e))
     if count:
         if allcount > 0:
             print(HEADER + path.basename(infile) + ENDCOLOR)
