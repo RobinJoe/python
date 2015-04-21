@@ -8,7 +8,7 @@ import json
 
 HOST = 'http://api.uptimerobot.com/getMonitors?apiKey='
 FORMAT = '&format=json&noJsonCallback=1'
-KEYFILE = '/home/bmoss/code/python/uptime/key.txt'
+KEYFILE = '/home/bmoss/scripts/python/uptime/key.txt'
 status_code = {'0': '\033[94mpaused', '1': 'not checked yet', '2': '\033[92mup', '8': '\033[93mseems down', '9': '\033[91mdown'}
 
 #class bcolors:
@@ -58,7 +58,7 @@ def logConfig():
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        filename='/home/bmoss/code/python/uptime/output.log',
+                        filename='/home/bmoss/scripts/python/uptime/output.log',
                         filemode='w')
 
 #===========================================================
