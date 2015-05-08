@@ -5,19 +5,23 @@
 import logging
 import requests
 import json
+from os import path
 
 HOST = 'http://api.uptimerobot.com/getMonitors?apiKey='
 FORMAT = '&format=json&noJsonCallback=1'
-KEYFILE = '/home/bmoss/scripts/python/uptime/pass.key'
+KEYFILE = path.expanduser('~/scripts/python/uptime/pass.key')
+LOGFILE = path.expanduser('~/scripts/python/uptime/output.log')
 status_code = {'0': '\033[94mpaused', '1': 'not checked yet', '2': '\033[92mup', '8': '\033[93mseems down', '9': '\033[91mdown'}
 
-#class bcolors:
+#----------------------------------------------------------
+# CLI colours:
 #    HEADER = '\033[95m'
 #    OKBLUE = '\033[94m'
 #    OKGREEN = '\033[92m'
 #    WARNING = '\033[93m'
 #    FAIL = '\033[91m'
 #    ENDCOLOR = '\033[0m'
+#----------------------------------------------------------
 
 def fetchKey():  # fetch API key from file
     try:
@@ -58,7 +62,7 @@ def logConfig():
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        filename='/home/bmoss/scripts/python/uptime/output.log',
+                        filename=LOGFILE,
                         filemode='w')
 
 #===========================================================

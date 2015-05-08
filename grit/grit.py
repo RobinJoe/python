@@ -1,13 +1,11 @@
 #!/bin/python
 
-# make the output nicer using prettytable
+# Fetch lastest reviews from watched projects
 
 import logging
 import requests
 import json
 from os import path
-
-#curl --digest --user bmoss:LUk9K6s8Vx77 "https://review.openstack.org/a/changes/?q=status:open+is:watched&n=2"
 
 HOST = 'https://review.openstack.org/a/'
 ENDPOINT = 'changes/'
