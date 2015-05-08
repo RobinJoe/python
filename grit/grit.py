@@ -1,25 +1,32 @@
 #!/bin/python
 
-# Display status of sites monitored by Uptimerobot
+# make the output nicer using prettytable
 
 import logging
 import requests
 import json
+from os import path
 
-HOST = 'http://api.uptimerobot.com/getMonitors?apiKey='
-FORMAT = '&format=json&noJsonCallback=1'
-KEYFILE = '/home/bmoss/scripts/python/uptime/pass.key'
-status_code = {'0': '\033[94mpaused', '1': 'not checked yet', '2': '\033[92mup', '8': '\033[93mseems down', '9': '\033[91mdown'}
+#curl --digest --user bmoss:LUk9K6s8Vx77 "https://review.openstack.org/a/changes/?q=status:open+is:watched&n=2"
 
-#class bcolors:
+HOST = 'https://review.openstack.org/a/'
+ENDPOINT = 'changes/'
+QUERY = '?q=status:open+is:watched&n=2'
+FORMAT = 'Accept: application/json'
+KEYFILE = path.expanduser('~/scripts/python/grit/pass.key')
+LOGFILE = path.expanduser('~/scripts/python/grit/output.log')
+
+#----------------------------------------------------------
+# CLI colours:
 #    HEADER = '\033[95m'
 #    OKBLUE = '\033[94m'
 #    OKGREEN = '\033[92m'
 #    WARNING = '\033[93m'
 #    FAIL = '\033[91m'
 #    ENDCOLOR = '\033[0m'
+#----------------------------------------------------------
 
-def fetchKey():  # fetch API key from file
+def fetchKey():  # fetch key from file
     try:
         with open(KEYFILE, 'rb') as f:
             logging.debug('Open ' + KEYFILE)
@@ -34,22 +41,26 @@ def fetchKey():  # fetch API key from file
 
 def main():
     logConfig()
-    key = fetchKey()
-    url = HOST + key + FORMAT
+    user,key = fetchKey().split(':')
+    url = HOST + ENDPOINT + QUERY# + ' ' + FORMAT
     try:
-        r = requests.get(url)
+        r = requests.get(url, verify=True, auth=requests.auth.HTTPDigestAuth(user, key))
         logging.debug('Content of request: ' + r.text)
     except Exception as e:
         logging.error(e)
         response = raw_input('\nWebsite error\nRetry? (y/n): ')
         if response == 'y': main()
         else: exit(0)
-    logging.debug('Attempting to load json')
-    data = (json.loads(r.text))
-    print ''
-    for monitor in data['monitors']['monitor']:
-        print status_code[monitor['status']] + ' ' + monitor['alltimeuptimeratio'] + '%\033[0m ' + monitor['friendlyname']
-    print ''
+    logging.info('Loading json')
+    try:
+        text = r.text[4:]
+        print text
+        data = (json.loads(text))
+    except Exception as e:
+        logging.error(e)
+        print('JSON decode error. See log.')
+        exit(0)
+    # do something with the decoded json here
     
 #===========================================================
 # Logging Configuration
@@ -58,8 +69,9 @@ def logConfig():
     logging.basicConfig(level=logging.DEBUG,
                         format='%(asctime)s %(levelname)s %(message)s',
                         datefmt='%Y-%m-%d %H:%M:%S',
-                        filename='/home/bmoss/scripts/python/uptime/output.log',
+                        filename=LOGFILE,
                         filemode='w')
+    logging.captureWarnings(True)
 
 #===========================================================
 
