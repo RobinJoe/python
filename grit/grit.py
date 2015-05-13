@@ -9,7 +9,7 @@ from os import path
 
 HOST = 'https://review.openstack.org/a/'
 ENDPOINT = 'changes/'
-QUERY = '?q=status:open+is:watched&n=2'
+QUERY = '?q=status:open+is:watched&n=10'
 FORMAT = 'Accept: application/json'
 KEYFILE = path.expanduser('~/scripts/python/grit/pass.key')
 LOGFILE = path.expanduser('~/scripts/python/grit/output.log')
