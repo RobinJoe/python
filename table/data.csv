@@ -1,0 +1,4 @@
+Name   ,Type,Unit,Resource,Origin,Support,Note         
+network.outgoing.bytes.rate,Gauge,B/s,interface ID,Pollster,"Libvirt, Hyper-V, vSphere, XenAPI",Average rate of outgoing bytes
+network.incoming.packets.rate,Gauge,packet/s,interface ID,Pollster,"Libvirt, Hyper-V, vSphere, XenAPI",Average rate of incoming packets
+network.outgoing.packets.rate,Gauge,packet/s,interface ID,Pollster,"Libvirt, Hyper-V, vSphere, XenAPI",Average rate of outgoing packets
