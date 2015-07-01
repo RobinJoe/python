@@ -1,4 +1,10 @@
-Name   ,Type,Unit,Resource,Origin,Support,Note         
-network.outgoing.bytes.rate,Gauge,B/s,interface ID,Pollster,"Libvirt, Hyper-V, vSphere, XenAPI",Average rate of outgoing bytes
-network.incoming.packets.rate,Gauge,packet/s,interface ID,Pollster,"Libvirt, Hyper-V, vSphere, XenAPI",Average rate of incoming packets
-network.outgoing.packets.rate,Gauge,packet/s,interface ID,Pollster,"Libvirt, Hyper-V, vSphere, XenAPI",Average rate of outgoing packets
+Name      ,Type,Unit,Resource,Origin,Note         
+network.services.firewall,Gauge,firewall,firewall ID,"Notification, Pollster",Existence of a firewall
+network.services.firewall.policy,Gauge,firewall_policy,firewall ID,"Notification, Pollster",Existence of a firewall policy
+network.services.firewall.create,Delta,firewall,firewall ID,Notification,Firewall was created
+network.services.firewall.update,Delta,firewall,firewall ID,Notification,Firewall was updated
+network.services.firewall.policy.create,Delta,firewall_policy,policy ID,Notification,Firewall policy was created
+network.services.firewall.policy.update,Delta,firewall_policy,policy ID,Notification,Firewall policy was updated
+network.services.firewall.rule,Gauge,firewall_rule,rule ID,Notification,Existence of a firewall rule
+network.services.firewall.rule.create,Delta,firewall_rule,rule ID,Notification,Firewall rule was created
+network.services.firewall.rule.update,Delta,firewall_rule,rule ID,Notification,Firewall rule was updated

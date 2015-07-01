@@ -43,25 +43,23 @@ def adjustRow(row, hw):
     next_row = []
     for entry in row:
         if len(entry) > hw[counter]:
-            row[counter] = entry[:hw[counter]] + "\\"
+            if entry[hw[counter]] != " " and entry[hw[counter]-1] != " ":
+                row[counter] = entry[:hw[counter]] + "\\"
+            else: row[counter] = entry[:hw[counter]]
             next_row.append(entry[hw[counter]:])
         else:
             row[counter] = entry
-            next_row.append("")
+            next_row.append(" " * hw[counter])
         counter += 1
     return row, next_row
 
 def adjustTable(array):
     hw = [] #width of each column based on the headers
     for header in array[0]:
-        hw.append(len(header))
+        hw.append(len(header)+2)
     new_array = []
     for row in array:
         row, next_row = adjustRow(row, hw)
-        new_array.append(row)
-        row, next_row = adjustRow(next_row, hw)
-        new_array.append(row)
-        row, next_row = adjustRow(next_row, hw)
         new_array.append(row)
         row, next_row = adjustRow(next_row, hw)
         new_array.append(row)
@@ -79,7 +77,7 @@ def buildTable(infile, outfile, manual):
     array = readCSV(infile)
     if manual is False:
         array = adjustTable(array)
-    rst_table = tabulate(array, headers="firstrow", tablefmt="grid")
+    rst_table = tabulate(array, headers="firstrow", tablefmt="grid")#, stralign=None)
     
     if outfile:
         writeRST(outfile, rst_table)
