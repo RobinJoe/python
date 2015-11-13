@@ -1,28 +1,32 @@
 #!/bin/python
-#----------------------------------------------------------
+# ----------------------------------------------------------
 # Creates a Docbook XML table from a CSV file
 #
 # CSV file must be encoded in ASCII or UTF-8
-#----------------------------------------------------------
+# ----------------------------------------------------------
 
 import argparse
 import csv
 import re
+import logging
 from os import path
 from bs4 import BeautifulSoup
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
 # Hack to set the indent for prettify
 
 orig_prettify = BeautifulSoup.prettify
 r = re.compile(r'^(\s*)', re.MULTILINE)
 
+
 def prettify(self, encoding=None, formatter="minimal", indent_width=4):
-    return r.sub(r'\1' * indent_width, orig_prettify(self, encoding, formatter))
+    return r.sub(r'\1' * indent_width,
+                 orig_prettify(self, encoding, formatter))
 
 BeautifulSoup.prettify = prettify
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
+
 
 def readCSV(infile):
     # reads CSV from file and returns a matrix of rows
@@ -37,6 +41,7 @@ def readCSV(infile):
         logging.error('File error (readData): ' + str(ioerr))
     return matrix
 
+
 def writeXML(outfile, xml):
     # writes an XML string to file
     outfile = path.realpath(outfile)
@@ -47,6 +52,7 @@ def writeXML(outfile, xml):
     except IOError as ioerr:
         logging.error('File error (writeData): ' + str(ioerr))
 
+
 def createRow(row_list):
     # creates an XML <row> from the entries in row_list
     soup = BeautifulSoup("<row></row>", "xml")
@@ -55,6 +61,7 @@ def createRow(row_list):
         entry.string = cell
         soup.row.append(entry)
     return soup.row
+
 
 def buildTable(matrix, section):
     # returns an XML <informaltable> built from a matrix of rows
@@ -73,7 +80,7 @@ def buildTable(matrix, section):
                                 </informaltable>''', "xml")
 
     # tgroup
-    cols = 'cols="' + str(len(matrix[1])) + '"'
+    # cols = 'cols="' + str(len(matrix[1])) + '"'
     soup.tgroup['cols'] = str(len(matrix[1]))
 
     # thead
@@ -90,23 +97,28 @@ def buildTable(matrix, section):
 
     return soup.prettify()
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
 # main
 
+
 def main():
-    parser = argparse.ArgumentParser(prog="csv2xml", description="Creates a Docbook XML table from a CSV file")
+    parser = argparse.ArgumentParser(
+        prog="csv2xml",
+        description='''Creates a Docbook XML table from a CSV file''')
     parser.add_argument('INPUT', type=str, help='CSV file')
-    parser.add_argument('OUTPUT', type=str, nargs='?', default=None, help='XML file')
-    parser.add_argument('-s', '--section', action='store_true', default=False, help='Add section tags')
+    parser.add_argument('OUTPUT', type=str, nargs='?', default=None,
+                        help='XML file')
+    parser.add_argument('-s', '--section', action='store_true', default=False,
+                        help='Add section tags')
     args = parser.parse_args()
     print("Generating table...\n")
-    table = buildTable(readCSV(args.INPUT),args.section)
+    table = buildTable(readCSV(args.INPUT), args.section)
     if args.OUTPUT is not None:
         writeXML(args.OUTPUT, table)
     else:
         print(table + "\nTable complete.")
 
-#===========================================================
+# ===========================================================
 
 if __name__ == '__main__':
         main()
