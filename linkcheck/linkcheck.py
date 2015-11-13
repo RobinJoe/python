@@ -82,7 +82,7 @@ def checklinks(infile, count, redirects, total, verbose):
     elif badcount > 0 and not verbose:
         print(HEADER + path.basename(infile) + ENDCOLOR)
         for badlink in badlinks:
-            print badlink
+            print(badlink)
     global sumall
     sumall += allcount
     return badcount

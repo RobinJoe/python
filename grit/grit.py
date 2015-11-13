@@ -49,7 +49,7 @@ def main():
         logging.debug('Content of request: ' + r.text)
     except Exception as e:
         logging.error(e)
-        response = raw_input('\nWebsite error\nRetry? (y/n): ')
+        response = input('\nWebsite error\nRetry? (y/n): ')
         if response == 'y':
             main()
         else:
@@ -57,9 +57,9 @@ def main():
     logging.info('Loading json')
     try:
         text = r.text[4:]
-        print text
+        print(text)
         data = (json.loads(text))
-        print data
+        print(data)
     except Exception as e:
         logging.error(e)
         print('JSON decode error. See log.')

@@ -133,7 +133,7 @@ def reorder(infile, outfile, replace):
     elif replace:
         writeData(infile, outputstring)
     else:
-        print outputstring
+        print(outputstring)
 
     # For testing
     return outputstring

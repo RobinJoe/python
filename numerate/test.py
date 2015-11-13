@@ -1,10 +1,13 @@
-import pytest
 import numerate
+import logging
+# import pytest
+
 
 def test_precleanXML():
     assert numerate.precleanXML(' ') == ' '
     assert numerate.precleanXML('o  o') == 'o o'
     assert numerate.precleanXML('o   o') == 'o o'
+
 
 def test_postcleanXML():
     assert numerate.postcleanXML('test') == 'test'
@@ -18,17 +21,18 @@ def test_postcleanXML():
     assert numerate.postcleanXML('\n\n') == '\n'
     assert numerate.postcleanXML('\n\n\n') == '\n'
 
+
 def test_cleanXML():
     stringIN = '''
 <screen>
-	BBB & CCC  C&U;  this ' and ` that code
+    BBB & CCC  C&U;  this ' and ` that code
 
 
         DDD & EEE  C&U;  this ' and ` that code
 </screen>
 '''
 
-    stringOUT ='''
+    stringOUT = '''
 <screen>BBB and CCC C&amp;U this ' and ' that code
 DDD and EEE C&amp;U this ' and ' that code</screen>
 '''
@@ -37,14 +41,18 @@ DDD and EEE C&amp;U this ' and ' that code</screen>
     stringIN = numerate.postcleanXML(stringIN)
     assert stringIN == stringOUT
 
-#@pytest.mark.xfail
+
+# @pytest.mark.xfail
+
+
 def test_reorderOutput():
     fileIN = 'input.xml'
     stringOUT = readData('output.xml')
     assert numerate.reorder(fileIN, False, False) == stringOUT
 
-#----------------------------------------------------------
+# ----------------------------------------------------------
 # Helper functions
+
 
 def readData(infile):  # reads XML from file
     try:

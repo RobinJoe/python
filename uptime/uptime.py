@@ -49,18 +49,19 @@ def main():
         logging.debug('Content of request: ' + r.text)
     except Exception as e:
         logging.error(e)
-        response = raw_input('\nWebsite error\nRetry? (y/n): ')
+        response = input('\nWebsite error\nRetry? (y/n): ')
         if response == 'y':
             main()
         else:
             exit(0)
     logging.debug('Attempting to load json')
     data = (json.loads(r.text))
-    print ''
+    print('')
     for monitor in data['monitors']['monitor']:
-        print status_code[monitor['status']] + ' '
-        + monitor['alltimeuptimeratio'] + '%\033[0m ' + monitor['friendlyname']
-    print ''
+        print(status_code[monitor['status']] + ' '
+              + monitor['alltimeuptimeratio'] + '%\033[0m '
+              + monitor['friendlyname'])
+    print('')
 
 # ===========================================================
 # Logging Configuration

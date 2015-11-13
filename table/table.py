@@ -88,7 +88,7 @@ def buildTable(infile, outfile, manual):
     if outfile:
         writeRST(outfile, rst_table)
     else:
-        print rst_table
+        print(rst_table)
 
 # ----------------------------------------------------------
 # main
