@@ -1,13 +1,13 @@
 #!/bin/python3
 """
-Converts RST grid tables into list-tables.
+Convert RST grid tables to list-tables.
 
 Basic usage:
 
     1. Copy the grid table into a file, e.g. 'input.rst'
     2. Convert the grid table to a list-table. The result is output to stdout:
 
-       $ table input.rst
+       $ python table.py input.rst
 
 Options:
 
@@ -16,19 +16,21 @@ Options:
 
 Important:
 
-    Always check build your document and compare the rendered list-table to the
+    Always build your document and compare the rendered list-table to the
     original rendered grid table. It is very possible that some errors may
     occur that require manual fixes, especially when converting complex tables.
 
 Warning:
 
-    This script does not handle multiline cells. If you convert a table with
-    multiline cells you may receive an error like this when running
-    sphinx-build:
+    This script does not handle cells that span multiple rows or columns. If
+    you convert a table with these types of cells you may receive a parsing
+    error when running sphinx-build
 
-    ERROR: Error parsing content block for the "list-table" directive: uniform
-           two-level bullet list expected, but row 2 does not contain the same
-           number of items as row 1 (4 vs 3)
+    Example:
+
+        ERROR: Error parsing content block for the "list-table" directive:
+               uniform two-level bullet list expected, but row 2 does not
+               contain the same number of items as row 1 (4 vs 3)
 
     This indicates that the list-table needs manual clean-up. Look for a lines
     like this in the source:
@@ -132,7 +134,7 @@ def buildTable(infile, outfile, title):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog="table",
                                      description='''Convert RST grid table
-                                     to list-table''')
+                                     to list-table.''')
     parser.add_argument('INPUT', type=str, help='''input RST file containing a
                         single table''')
     parser.add_argument('-o', type=str, dest='file', default=None,
