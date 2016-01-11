@@ -14,6 +14,12 @@ Options:
     -o [FILE]   Write the converted table to [FILE]
     -t [TITLE]  Use [TITLE] as the table title
 
+Important:
+
+    Always check build your document and compare the rendered list-table to the
+    original rendered grid table. It is very possible that some errors may
+    occur that require manual fixes, especially when converting complex tables.
+
 Warning:
 
     This script does not handle multiline cells. If you convert a table with
@@ -27,9 +33,6 @@ Warning:
     This indicates that the list-table needs manual clean-up. Look for a lines
     like this in the source:
 
-       * - Category
-         - Privilege
-         - Available
        * - Alarms
          - Acknowledge an alarm    * - hello
          -
