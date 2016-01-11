@@ -56,11 +56,6 @@ import argparse
 import logging
 from os import path
 
-home = path.expanduser("~")
-script_dir = path.dirname(path.realpath(__file__))
-
-# ----------------------------------------------------------
-
 
 def readfile(infile):
     """Read data from file and return string."""
