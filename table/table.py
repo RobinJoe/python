@@ -4,15 +4,29 @@ Convert RST grid tables to list-tables.
 
 Basic usage:
 
-    1. Copy the grid table into a file, e.g. 'input.rst'
-    2. Convert the grid table to a list-table. The result is output to stdout:
+    1. Convert a grid tables in a file to a list-tables. The result is output
+       to stdout:
 
-       $ python table.py input.rst
+       $ python tables.py input.rst
+
+    2. Convert several files:
+
+       $ python tables.py input1.rst input2.rst
+
+       $ python tables.py *.rst
 
 Options:
 
-    -o [FILE]   Write the converted table to [FILE]
-    -t [TITLE]  Use [TITLE] as the table title
+    -c, --create    create new files (*.rst.new) with the converted tables.
+                    Original files are unchanged.
+    -r, --replace   modify input files, replacing grid tables with list-tables
+
+Warning:
+
+    The script does not perform any tests on the conversion nor does it
+    rollback if it encounters an error. Using the --replace option replaces the
+    source text completely. To prevent data loss, use the --create option and
+    confirm the conversion is correct before removing the original source file.
 
 Important:
 
@@ -20,9 +34,7 @@ Important:
     original rendered grid table. It is very possible that some errors may
     occur that require manual fixes, especially when converting complex tables.
 
-Warning:
-
-    This script does not handle cells that span multiple rows or columns. If
+    The script does not handle cells that span multiple rows or columns. If
     you convert a table with these types of cells you may receive a parsing
     error when running sphinx-build
 
@@ -44,6 +56,9 @@ Warning:
     broken row.
 
 Notes:
+
+    The script does not create titles for tables. After conversion, you may
+    want to manually add titles.
 
     The script sets all columns to the same width: 100 / col_num. After
     conversion, you may want to manually edit :width:
@@ -91,38 +106,61 @@ def adjustRow(row, col_num):
         except:
             pass
     convert = []
-    convert.append('  * - ' + new_row[0].strip())
+    convert.append('   * - ' + new_row[0].strip())
     for entry in new_row[1:]:
-        convert.append('\n     - ' + entry.strip())
-    result = ' '.join(convert)
+        convert.append(('\n     - ' + entry.strip()).rstrip())
+    result = ''.join(convert)
     return(result)
 
 
-def buildTable(infile, outfile, title):
+def buildTable(data):
     """Build an RST list-table."""
-    data = readfile(infile)
-    data = data.splitlines()
-    if title is None:
-        title = ''
     col_num = data[0].count('+') - 1
     col_width = str(int(100 / col_num))
-    col_width = (col_width + ' ') * col_num
+    col_width = (' ' + col_width) * col_num
 
     output = []
     for line in data:
         row = adjustRow(line, col_num)
         output.append(row)
-    result = ' '.join(output)
+    result = ''.join(output)
+    list_table = """.. list-table::\n   :widths:%s\n   :header-rows: 1\n%s""" \
+                 % (col_width, result)
+    return(list_table)
 
-    list_table = """.. list-table:: %s
-   :widths: %s
-   :header-rows: 1
-   %s""" % (title, col_width, result)
 
-    if outfile:
-        writefile(outfile, list_table)
+def dofile(infile, replace, create):
+    """Process file to convert grid tables to list-tables."""
+    data = readfile(infile)
+    data = data.splitlines()
+    grid = False
+    insert = False
+    gridtable = []
+    content = []
+    for line in data:
+        if line.startswith('+--') is True or line.startswith('+==') is True:
+            grid = True
+            insert = True
+            gridtable.append(line)
+        elif grid is True and line.startswith('|') is True:
+            gridtable.append(line)
+        else:
+            grid = False
+        if grid is False:
+            if insert is True:
+                insert = False
+                newtable = buildTable(gridtable)
+                content.append(newtable + '\n')
+                gridtable = []
+            else:
+                content.append(line + '\n')
+    content = ''.join(content)
+    if replace is True:
+        writefile(infile, content)
+    elif create is True:
+        writefile(infile + '.new', content)
     else:
-        print(list_table)
+        print(content)
     return
 
 
@@ -130,11 +168,14 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog="table",
                                      description='''Convert RST grid table
                                      to list-table.''')
-    parser.add_argument('INPUT', type=str, help='''input RST file containing a
-                        single table''')
-    parser.add_argument('-o', type=str, dest='file', default=None,
-                        help='write the converted table to [FILE]')
-    parser.add_argument('-t', type=str, dest='title', default=None,
-                        help='use [TITLE] as the table title')
+    parser.add_argument('INPUT', type=str, nargs='+', help='RST file(s)')
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument('-c', '--create', action='store_true',
+                       help='''create new files (*.rst.new) with the converted
+                       tables. Original files are unchanged.''')
+    group.add_argument('-r', '--replace', action='store_true',
+                       help='''modify input files, replacing grid tables with
+                       list-tables''')
     args = parser.parse_args()
-    buildTable(args.INPUT, args.file, args.title)
+    for file in args.INPUT:
+        dofile(file, args.replace, args.create)
