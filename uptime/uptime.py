@@ -58,9 +58,9 @@ def main():
     data = (json.loads(r.text))
     print('')
     for monitor in data['monitors']['monitor']:
-        print(status_code[monitor['status']] + ' '
-              + monitor['alltimeuptimeratio'] + '%\033[0m '
-              + monitor['friendlyname'])
+        print(status_code[monitor['status']] + ' ' +
+              monitor['alltimeuptimeratio'] + '%\033[0m ' +
+              monitor['friendlyname'])
     print('')
 
 # ===========================================================

@@ -88,8 +88,8 @@ def stringFromList(array):
 
 def fetchText(errata):  # fetches doc text from the errata tool
     kbsource = 'HTTP@errata.devel.redhat.com'
-    url = ('https://errata.devel.redhat.com/docs/draft_release_notes_xml/'
-           + errata)
+    url = ('''https://errata.devel.redhat.com/docs/
+           draft_release_notes_xml/''' + errata)
     krb = KerberosTicket(kbsource)
     headers = {"Authorization": krb.auth_header}
     r = requests.get(url, headers=headers, verify=False)
