@@ -44,7 +44,7 @@ Important:
                uniform two-level bullet list expected, but row 2 does not
                contain the same number of items as row 1 (4 vs 3)
 
-    This indicates that the list-table needs manual clean-up. Look for a lines
+    This indicates that the list-table needs manual clean-up. Look for lines
     like this in the source:
 
        * - Alarms
