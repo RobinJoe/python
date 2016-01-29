@@ -71,6 +71,9 @@ import argparse
 import logging
 from os import path
 
+# number of tables converted during a run
+numtables = 0
+
 
 def readfile(infile):
     """Read data from file and return string."""
@@ -126,6 +129,8 @@ def buildTable(data):
     result = ''.join(output)
     list_table = """.. list-table::\n   :widths:%s\n   :header-rows: 1\n%s""" \
                  % (col_width, result)
+    global numtables
+    numtables += 1
     return(list_table)
 
 
@@ -179,3 +184,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     for file in args.INPUT:
         dofile(file, args.replace, args.create)
+    print('\033[92mTables converted: ' + str(numtables) + '\033[0m')
