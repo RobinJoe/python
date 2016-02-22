@@ -1,5 +1,7 @@
 #!/bin/python3
 
+"""Create CSV from a list of items."""
+
 import logging
 from os import path
 
@@ -37,7 +39,7 @@ if __name__ == '__main__':
             result.append(item + '\n')
             count = 0
         else:
-            result.append(item + ';')
+            result.append(item + ',')
             count += 1
     result = ' '.join(result)
     print(result)

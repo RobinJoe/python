@@ -1,11 +1,12 @@
 #!/bin/python
 
-# Fetch lastest reviews from watched projects
+"""Fetch lastest reviews from watched OpenStack projects."""
 
-import logging
-import requests
 import json
+import logging
 from os import path
+
+import requests
 
 HOST = 'https://review.openstack.org/a/'
 ENDPOINT = 'changes/'
@@ -25,23 +26,31 @@ LOGFILE = path.expanduser('~/scripts/python/grit/output.log')
 # ----------------------------------------------------------
 
 
-def fetchKey():  # fetch key from file
+def fetchkey():
+    """Fetch key from file."""
     try:
         with open(KEYFILE, 'rb') as f:
             logging.debug('Open ' + KEYFILE)
             key = f.read()
             logging.info('Key fetched')
     except IOError as ioerr:
-        logging.error('File error (fetchKey): ' + str(ioerr))
+        logging.error('File error (fetchkey): ' + str(ioerr))
     return key
 
-# ----------------------------------------------------------
-# main
+
+def logconfig():
+    """Configure logging."""
+    logging.basicConfig(level=logging.DEBUG,
+                        format='%(asctime)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        filename=LOGFILE,
+                        filemode='w')
+    logging.captureWarnings(True)
 
 
-def main():
-    logConfig()
-    user, key = fetchKey().split(':')
+if __name__ == '__main__':
+    logconfig()
+    user, key = fetchkey().split(':')
     url = HOST + ENDPOINT + QUERY  # + ' ' + FORMAT
     try:
         r = requests.get(url, verify=True,
@@ -49,11 +58,8 @@ def main():
         logging.debug('Content of request: ' + r.text)
     except Exception as e:
         logging.error(e)
-        response = input('\nWebsite error\nRetry? (y/n): ')
-        if response == 'y':
-            main()
-        else:
-            exit(0)
+        response = input('\nWebsite error\n')
+        exit(0)
     logging.info('Loading json')
     try:
         text = r.text[4:]
@@ -65,20 +71,3 @@ def main():
         print('JSON decode error. See log.')
         exit(0)
     # do something with the decoded json here
-
-# ===========================================================
-# Logging Configuration
-
-
-def logConfig():
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        filename=LOGFILE,
-                        filemode='w')
-    logging.captureWarnings(True)
-
-# ===========================================================
-
-if __name__ == '__main__':
-    main()

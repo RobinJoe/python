@@ -1,5 +1,7 @@
 #!/bin/python
 
+"""Setup file for python repo."""
+
 from distutils.core import setup
 
 setup(name='source',

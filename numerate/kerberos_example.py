@@ -1,3 +1,7 @@
+#!/bin/python3
+
+"""Example using Kerberos with Python."""
+
 import requests
 from kb import KerberosTicket
 

@@ -1,50 +1,46 @@
 #!/bin/python
-# ----------------------------------------------------------
-# Takes DocBook XML file or directory and checks ulinks.
-#
-# Note this only checks for a 200 response, it does not
-# check that the destination contains the correct content.
-# ----------------------------------------------------------
+"""
+Check ulinks in DocBook XML file or directory of XML files.
+
+Note this only checks for a 200 response, it does not
+check that the destination contains the correct content.
+"""
 
 import argparse
 import logging
-import requests
-from os import path
 from glob import iglob
+from os import path
+
+import requests
 from bs4 import BeautifulSoup
 
 # ----------------------------------------------------------
-# Text color codes
-
+# CLI colours:
 HEADER = '\033[95m'
 OKBLUE = '\033[94m'
 OKGREEN = '\033[92m'
 WARNING = '\033[93m'
 FAIL = '\033[91m'
 ENDCOLOR = '\033[0m'
-
 # ----------------------------------------------------------
 
 sumall = 0
 
-# ----------------------------------------------------------
 
-
-def readData(infile):  # reads XML from file
+def readdata(infile):
+    """Read XML from file."""
     infile = path.realpath(infile)
     try:
         with open(infile, 'rb') as f:
             xml = f.read()
     except IOError as ioerr:
-        logging.error('File error (readData): ' + str(ioerr))
+        logging.error('File error (readdata): ' + str(ioerr))
     return xml
 
 
 def checklinks(infile, count, redirects, total, verbose):
-    # check links and either display invalid links or display
-    # count of valid and invalid links
-
-    soup = BeautifulSoup(readData(infile), 'html.parser')
+    """Display invalid links or display count of valid and invalid links."""
+    soup = BeautifulSoup(readdata(infile), 'html.parser')
     badlinks = []
     allcount, goodcount, badcount = 0, 0, 0
 
@@ -87,12 +83,19 @@ def checklinks(infile, count, redirects, total, verbose):
     sumall += allcount
     return badcount
 
-# ----------------------------------------------------------
-# main
+
+def logconfig():
+    """Configure logging."""
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='%(asctime)s %(levelname)s %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        filename='/home/bmoss/scripts/python/linkcheck/debug.log',
+        filemode='w')
 
 
-def main():
-    logConfig()
+if __name__ == '__main__':
+    logconfig()
     parser = argparse.ArgumentParser(
         prog="linkcheck", description="Check ulinks in DocBook XML.")
     parser.add_argument('INPUT', type=str,
@@ -118,20 +121,3 @@ def main():
                                    args.total, args.verbose)
     print("\nLinks checked: " + str(sumall))
     print("Broken links: " + str(badtotal) + "\n")
-
-# ===========================================================
-# Logging Configuration
-
-
-def logConfig():
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='%(asctime)s %(levelname)s %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        filename='/home/bmoss/scripts/python/linkcheck/debug.log',
-        filemode='w')
-
-# ===========================================================
-
-if __name__ == '__main__':
-        main()

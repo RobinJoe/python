@@ -96,7 +96,7 @@ def writefile(outfile, data):
         logging.error('File error (writeData): ' + str(ioerr))
 
 
-def adjustRow(row, col_num):
+def adjustrow(row, col_num):
     """Convert a grid row to a list-table row."""
     if row.startswith('+') is True:
         return('\n')
@@ -116,7 +116,7 @@ def adjustRow(row, col_num):
     return(result)
 
 
-def buildTable(data):
+def buildtable(data):
     """Build an RST list-table."""
     col_num = data[0].count('+') - 1
     col_width = str(int(100 / col_num))
@@ -124,7 +124,7 @@ def buildTable(data):
 
     output = []
     for line in data:
-        row = adjustRow(line, col_num)
+        row = adjustrow(line, col_num)
         output.append(row)
     result = ''.join(output)
     list_table = """.. list-table::\n   :widths:%s\n   :header-rows: 1\n%s""" \
@@ -154,7 +154,7 @@ def dofile(infile, replace, create):
         if grid is False:
             if insert is True:
                 insert = False
-                newtable = buildTable(gridtable)
+                newtable = buildtable(gridtable)
                 content.append(newtable + '\n')
                 gridtable = []
             else:

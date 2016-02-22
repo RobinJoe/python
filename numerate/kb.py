@@ -1,9 +1,14 @@
+#!/bin/python3
+"""Module for obtaining kerbos tickets."""
+
 import kerberos
 
 
 class KerberosTicket:
+    """Obtain a kerberos ticket."""
 
     def __init__(self, service):
+        """Init self."""
         __, krb_context = kerberos.authGSSClientInit(service)
         kerberos.authGSSClientStep(krb_context, "")
         self._krb_context = krb_context
@@ -11,7 +16,7 @@ class KerberosTicket:
                             kerberos.authGSSClientResponse(krb_context))
 
     def verify_response(self, auth_header):
-        # Handle comma-separated lists of authentication fields
+        """Handle comma-separated lists of authentication fields."""
         for field in auth_header.split(","):
             kind, __, details = field.strip().partition(" ")
             if kind.lower() == "negotiate":

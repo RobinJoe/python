@@ -1,13 +1,14 @@
 #!/bin/python
 
-# Display status of sites monitored by Uptimerobot
+"""Display status of sites monitored by Uptimerobot on the command line."""
 
-import logging
-import requests
 import json
+import logging
 from os import path
 
-HOST = 'http://api.uptimerobot.com/getMonitors?apiKey='
+import requests
+
+HOST = 'http://api.uptimerobot.com/getMonitors?apikey='
 FORMAT = '&format=json&noJsonCallback=1'
 KEYFILE = path.expanduser('~/scripts/python/uptime/pass.key')
 LOGFILE = path.expanduser('~/scripts/python/uptime/output.log')
@@ -26,34 +27,38 @@ status_code = {'0': '\033[94mpaused', '1': 'not checked yet',
 # ----------------------------------------------------------
 
 
-def fetchKey():  # fetch API key from file
+def fetchkey():
+    """Fetch API key from file."""
     try:
         with open(KEYFILE, 'rb') as f:
             logging.debug('Open ' + KEYFILE)
             key = f.read()
-            logging.info('Key fetched')
+            logging.info('key fetched')
     except IOError as ioerr:
-        logging.error('File error (fetchKey): ' + str(ioerr))
+        logging.error('File error (fetchkey): ' + str(ioerr))
     return key
 
-# ----------------------------------------------------------
-# main
+
+def logconfig():
+    """Configure logging."""
+    logging.basicconfig(level=logging.DEBUG,
+                        format='%(asctime)s %(levelname)s %(message)s',
+                        datefmt='%Y-%m-%d %H:%M:%S',
+                        filename=LOGFILE,
+                        filemode='w')
 
 
-def main():
-    logConfig()
-    key = fetchKey()
+if __name__ == '__main__':
+    logconfig()
+    key = fetchkey()
     url = HOST + key + FORMAT
     try:
         r = requests.get(url)
         logging.debug('Content of request: ' + r.text)
     except Exception as e:
         logging.error(e)
-        response = input('\nWebsite error\nRetry? (y/n): ')
-        if response == 'y':
-            main()
-        else:
-            exit(0)
+        response = input('\nWebsite error\n')
+        exit(0)
     logging.debug('Attempting to load json')
     data = (json.loads(r.text))
     print('')
@@ -62,19 +67,3 @@ def main():
               monitor['alltimeuptimeratio'] + '%\033[0m ' +
               monitor['friendlyname'])
     print('')
-
-# ===========================================================
-# Logging Configuration
-
-
-def logConfig():
-    logging.basicConfig(level=logging.DEBUG,
-                        format='%(asctime)s %(levelname)s %(message)s',
-                        datefmt='%Y-%m-%d %H:%M:%S',
-                        filename=LOGFILE,
-                        filemode='w')
-
-# ===========================================================
-
-if __name__ == '__main__':
-    main()
