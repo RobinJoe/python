@@ -76,7 +76,18 @@ numtables = 0
 
 
 def readfile(infile):
-    """Read data from file and return string."""
+    """
+    Read data from file and return text as a string.
+
+    :param infile: file to read
+    :type infile: str
+    :returns: text (Success), 1 (Failure)
+    :rtype: str or int
+    :example:
+
+    >>> readfile('tools/example.txt')
+    'Hello world!'
+    """
     infile = path.realpath(infile)
     try:
         with open(infile, 'r') as f:
@@ -87,7 +98,18 @@ def readfile(infile):
 
 
 def writefile(outfile, data):
-    """Write data to file."""
+    """
+    Write data to file.
+
+    :param outfile: file to write
+    :type files: str
+    :returns: 0 (Success), 1 (Failure)
+    :rtype: int
+    :example:
+
+    >>> writefile('tools/example.txt', 'Hello world!')
+    0
+    """
     outfile = path.realpath(outfile)
     try:
         with open(outfile, 'w') as f:
@@ -96,8 +118,15 @@ def writefile(outfile, data):
         logging.error('File error (writeData): ' + str(ioerr))
 
 
-def adjustrow(row, col_num):
-    """Convert a grid row to a list-table row."""
+def adjustrow(row):
+    """
+    Convert a grid row to a list-table row.
+
+    :param row: a row of grid table text
+    :type row: str
+    :return: a row of list-table text
+    :rtype: str
+    """
     if row.startswith('+') is True:
         return('\n')
     row = row.split('|')
@@ -116,15 +145,22 @@ def adjustrow(row, col_num):
     return(result)
 
 
-def buildtable(data):
-    """Build an RST list-table."""
-    col_num = data[0].count('+') - 1
+def buildtable(gridtable):
+    """
+    Build an RST list-table from an RST grid table.
+
+    :param gridtable: an RST grid table
+    :type gridtable: list
+    :return: an RST list-table
+    :rtype: str
+    """
+    col_num = gridtable[0].count('+') - 1
     col_width = str(int(100 / col_num))
     col_width = (' ' + col_width) * col_num
 
     output = []
-    for line in data:
-        row = adjustrow(line, col_num)
+    for line in gridtable:
+        row = adjustrow(line)
         output.append(row)
     result = ''.join(output)
     list_table = """.. list-table::\n   :widths:%s\n   :header-rows: 1\n%s""" \
