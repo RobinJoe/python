@@ -11,7 +11,9 @@ STARTDIR=`pwd`
 GITDIR=`git rev-parse --show-toplevel`
 
 # set source directories
-SOURCE='doc'
+DOC='doc'
+SOURCE='scripts'
+CONFIG='tox.ini'
 
 # ensure master is up-to-date
 cd $GITDIR
@@ -23,11 +25,11 @@ git checkout gh-pages
 find * -not -name ".*" -delete
 
 # checkout source directories from master and reset HEAD
-git checkout master $SOURCE
+git checkout master $DOC $SOURCE $CONFIG
 git reset HEAD
 
 # build html from rst in internal directory
-cd $SOURCE
+cd $DOC
 make html
 
 # move html files to root directory
@@ -35,7 +37,7 @@ mv -fv _build/html/* ../
 
 # remove source files
 cd $GITDIR
-rm -rf $SOURCE
+rm -rf $DOC $SOURCE $CONFIG
 
 # add, commit, and push new html files
 git add .
