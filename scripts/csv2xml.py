@@ -1,4 +1,6 @@
-#!/bin/python
+#!/bin/python3
+# coding: utf-8
+
 """
 Create a Docbook XML table from a CSV file.
 

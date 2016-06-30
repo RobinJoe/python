@@ -1,4 +1,6 @@
-#!/bin/python
+#!/bin/python3
+# coding: utf-8
+
 """
 Build RST tables from CSV lists.
 

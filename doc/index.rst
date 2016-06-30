@@ -2,12 +2,60 @@
 Python Scripts Documentation
 ============================
 
-Project documentation goes here.
+Various helpful Python scripts.
 
 *Last updated:* |today|
 
-Code listing
+bugs.py
+~~~~~~~
+
+.. automodule:: bugs
+   :members:
+
+
+comma.py
+~~~~~~~~
+
+.. automodule:: comma
+   :members:
+
+
+csv2rst.py
+~~~~~~~~~~
+
+.. automodule:: csv2rst
+   :members:
+
+
+csv2xml.py
+~~~~~~~~~~
+
+.. automodule:: csv2xml
+   :members:
+
+
+grit.py
+~~~~~~~
+.. automodule:: grit
+   :members:
+
+
+linkcheck.py
 ~~~~~~~~~~~~
 
-.. automodule:: scripts
+.. automodule:: linkcheck
+   :members:
+
+
+table.py
+~~~~~~~~
+
+.. automodule:: table
+   :members:
+
+
+uptime.py
+~~~~~~~~~
+
+.. automodule:: uptime
    :members:

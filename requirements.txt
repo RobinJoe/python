@@ -1,4 +1,5 @@
 bashate
+bs4
 doc8
 flake8
 isort
@@ -7,6 +8,8 @@ pep257
 pyenchant
 pytest
 pytest-cov
+requests
 sphinx
 sphinxcontrib-spelling
 sphinx_rtd_theme
+tabulate

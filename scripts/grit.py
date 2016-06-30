@@ -1,6 +1,7 @@
-#!/bin/python
+#!/bin/python3
+# coding: utf-8
 
-"""Fetch lastest reviews from watched OpenStack projects."""
+"""Fetch latest reviews from watched OpenStack projects."""
 
 import json
 import logging

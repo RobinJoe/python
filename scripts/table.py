@@ -1,34 +1,39 @@
 #!/bin/python3
+# coding: utf-8
+
 """
 Convert RST grid tables to list-tables.
 
-Basic usage:
+Basic usage
+-----------
 
-    1. Convert a grid tables in a file to a list-tables. The result is output
-       to stdout:
+#. Convert a grid tables in a file to a list-tables. The result is output
+   to stdout::
 
-       $ python tables.py input.rst
+      $ python tables.py input.rst
 
-    2. Convert several files:
+#. Convert several files::
 
-       $ python tables.py input1.rst input2.rst
+      $ python tables.py input1.rst input2.rst
 
-       $ python tables.py *.rst
+      $ python tables.py *.rst
 
-Options:
+Options
+-------
 
-    -c, --create    create new files (*.rst.new) with the converted tables.
-                    Original files are unchanged.
-    -r, --replace   modify input files, replacing grid tables with list-tables
+-c, --create    create new files ``*.rst.new`` with the converted tables.
+                Original files are unchanged.
+-r, --replace   modify input files, replacing grid tables with list-tables
 
-Warning:
+.. warning::
 
     The script does not perform any tests on the conversion nor does it
-    rollback if it encounters an error. Using the --replace option replaces the
-    source text completely. To prevent data loss, use the --create option and
-    confirm the conversion is correct before removing the original source file.
+    rollback if it encounters an error. Using the ``--replace`` option
+    replaces the source text completely. To prevent data loss, use the
+    ``--create`` option and confirm the conversion is correct before removing
+    the original source file.
 
-Important:
+.. important::
 
     Always build your document and compare the rendered list-table to the
     original rendered grid table. It is very possible that some errors may
@@ -36,16 +41,14 @@ Important:
 
     The script does not handle cells that span multiple rows or columns. If
     you convert a table with these types of cells you may receive a parsing
-    error when running sphinx-build
+    error when running sphinx-build::
 
-    Example:
-
-        ERROR: Error parsing content block for the "list-table" directive:
-               uniform two-level bullet list expected, but row 2 does not
-               contain the same number of items as row 1 (4 vs 3)
+       ERROR: Error parsing content block for the "list-table" directive:
+              uniform two-level bullet list expected, but row 2 does not
+              contain the same number of items as row 1 (4 vs 3)
 
     This indicates that the list-table needs manual clean-up. Look for lines
-    like this in the source:
+    like this in the source::
 
        * - Alarms
          - Acknowledge an alarm    * - hello
@@ -55,16 +58,17 @@ Important:
     Compare with the original table to determine the correct structure of the
     broken row.
 
-Notes:
+Notes
+-----
 
-    The script does not create titles for tables. After conversion, you may
-    want to manually add titles.
+- The script does not create titles for tables. After conversion, you may
+  want to manually add titles.
 
-    The script sets all columns to the same width: 100 / col_num. After
-    conversion, you may want to manually edit :width:
+- The script sets all columns to the same width: ``100 / col_num``. After
+  conversion, you may want to manually edit ``:width:``.
 
-    The script automatically uses the first row of the table as a header.
-    After covervsion, you may want to manually edit :header-rows:
+- The script automatically uses the first row of the table as a header.
+  After conversion, you may want to manually edit ``:header-rows:``.
 """
 
 import argparse

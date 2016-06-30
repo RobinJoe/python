@@ -1,4 +1,5 @@
 #!/bin/python3
+# coding: utf-8
 
 """Create CSV from a list of items."""
 

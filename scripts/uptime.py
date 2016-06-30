@@ -1,4 +1,5 @@
-#!/bin/python
+#!/bin/python3
+# coding: utf-8
 
 """Display status of sites monitored by Uptimerobot on the command line."""
 

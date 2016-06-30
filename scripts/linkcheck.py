@@ -1,4 +1,6 @@
-#!/bin/python
+#!/bin/python3
+# coding: utf-8
+
 """
 Check ulinks in DocBook XML file or directory of XML files.
 
