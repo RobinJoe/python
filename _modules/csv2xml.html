@@ -1,0 +1,302 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>csv2xml &mdash; Python Scripts  documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/theme_overrides.css" type="text/css" />
+  
+
+  
+    <link rel="top" title="Python Scripts  documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Python Scripts
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <!-- Local TOC -->
+                <div class="local-toc"></div>
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">Python Scripts</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>csv2xml</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for csv2xml</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/bin/python3</span>
+<span class="c1"># coding: utf-8</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Create a Docbook XML table from a CSV file.</span>
+
+<span class="sd">CSV file must be encoded in ASCII or UTF-8.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="c1"># Hack to set the indent for prettify</span>
+<span class="n">orig_prettify</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="o">.</span><span class="n">prettify</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;^(\s*)&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="prettify"><a class="viewcode-back" href="../index.html#csv2xml.prettify">[docs]</a><span class="k">def</span> <span class="nf">prettify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="s2">&quot;minimal&quot;</span><span class="p">,</span> <span class="n">indent_width</span><span class="o">=</span><span class="mi">4</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Set indent for prettify.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">r</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="s1">r&#39;\1&#39;</span> <span class="o">*</span> <span class="n">indent_width</span><span class="p">,</span>
+                 <span class="n">orig_prettify</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">encoding</span><span class="p">,</span> <span class="n">formatter</span><span class="p">))</span></div>
+
+<span class="n">BeautifulSoup</span><span class="o">.</span><span class="n">prettify</span> <span class="o">=</span> <span class="n">prettify</span>
+
+
+<div class="viewcode-block" id="readcsv"><a class="viewcode-back" href="../index.html#csv2xml.readcsv">[docs]</a><span class="k">def</span> <span class="nf">readcsv</span><span class="p">(</span><span class="n">infile</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read CSV from file and return a matrix of rows.&quot;&quot;&quot;</span>
+    <span class="n">infile</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
+    <span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">ioerr</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;File error (readData): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ioerr</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">matrix</span></div>
+
+
+<div class="viewcode-block" id="writexml"><a class="viewcode-back" href="../index.html#csv2xml.writexml">[docs]</a><span class="k">def</span> <span class="nf">writexml</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">xml</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Write an XML string to file.&quot;&quot;&quot;</span>
+    <span class="n">outfile</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">outfile</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">xml</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;XML saved to &quot;</span> <span class="o">+</span> <span class="n">outfile</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">ioerr</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;File error (writeData): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ioerr</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="createrow"><a class="viewcode-back" href="../index.html#csv2xml.createrow">[docs]</a><span class="k">def</span> <span class="nf">createrow</span><span class="p">(</span><span class="n">row_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create an XML &lt;row&gt; from the entries in row_list.&quot;&quot;&quot;</span>
+    <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="s2">&quot;&lt;row&gt;&lt;/row&gt;&quot;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">cell</span> <span class="ow">in</span> <span class="n">row_list</span><span class="p">:</span>
+        <span class="n">entry</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">new_tag</span><span class="p">(</span><span class="s2">&quot;entry&quot;</span><span class="p">)</span>
+        <span class="n">entry</span><span class="o">.</span><span class="n">string</span> <span class="o">=</span> <span class="n">cell</span>
+        <span class="n">soup</span><span class="o">.</span><span class="n">row</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">entry</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">soup</span><span class="o">.</span><span class="n">row</span></div>
+
+
+<div class="viewcode-block" id="buildtable"><a class="viewcode-back" href="../index.html#csv2xml.buildtable">[docs]</a><span class="k">def</span> <span class="nf">buildtable</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">section</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return an XML &lt;informaltable&gt; built from a matrix of rows.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">section</span> <span class="ow">is</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;&lt;section&gt;</span>
+<span class="s1">                                    &lt;title&gt;Insert Title Here&lt;/title&gt;</span>
+<span class="s1">                                    &lt;informaltable&gt;</span>
+<span class="s1">                                        &lt;tgroup&gt;</span>
+<span class="s1">                                        &lt;/tgroup&gt;</span>
+<span class="s1">                                    &lt;/informaltable&gt;</span>
+<span class="s1">                                &lt;/section&gt;&#39;&#39;&#39;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">soup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="s1">&#39;&#39;&#39;&lt;informaltable&gt;</span>
+<span class="s1">                                    &lt;tgroup&gt;</span>
+<span class="s1">                                    &lt;/tgroup&gt;</span>
+<span class="s1">                                &lt;/informaltable&gt;&#39;&#39;&#39;</span><span class="p">,</span> <span class="s2">&quot;xml&quot;</span><span class="p">)</span>
+
+    <span class="c1"># tgroup</span>
+    <span class="c1"># cols = &#39;cols=&quot;&#39; + str(len(matrix[1])) + &#39;&quot;&#39;</span>
+    <span class="n">soup</span><span class="o">.</span><span class="n">tgroup</span><span class="p">[</span><span class="s1">&#39;cols&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">matrix</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># thead</span>
+    <span class="n">thead</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">new_tag</span><span class="p">(</span><span class="s2">&quot;thead&quot;</span><span class="p">)</span>
+    <span class="n">soup</span><span class="o">.</span><span class="n">tgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">thead</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">thead</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">createrow</span><span class="p">(</span><span class="n">header</span><span class="p">))</span>
+
+    <span class="c1"># tbody</span>
+    <span class="n">tbody</span> <span class="o">=</span> <span class="n">soup</span><span class="o">.</span><span class="n">new_tag</span><span class="p">(</span><span class="s2">&quot;tbody&quot;</span><span class="p">)</span>
+    <span class="n">soup</span><span class="o">.</span><span class="n">tgroup</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tbody</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">:</span>
+        <span class="n">tbody</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">createrow</span><span class="p">(</span><span class="n">row</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">soup</span><span class="o">.</span><span class="n">prettify</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span>
+        <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;csv2xml&quot;</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;Creates a Docbook XML table from a CSV file&#39;&#39;&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;INPUT&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;CSV file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;OUTPUT&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;XML file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--section&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Add section tags&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Generating table...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">table</span> <span class="o">=</span> <span class="n">buildtable</span><span class="p">(</span><span class="n">readcsv</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">INPUT</span><span class="p">),</span> <span class="n">args</span><span class="o">.</span><span class="n">section</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">OUTPUT</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="n">writexml</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span> <span class="n">table</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">table</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Table complete.&quot;</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, Brian Moss.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
