@@ -7,5 +7,6 @@ py
 rst
 stdout
 ulinks
+uptime
 Uptimerobot
 xml
