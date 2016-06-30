@@ -89,16 +89,20 @@ def readfile(infile):
     :rtype: str or int
     :example:
 
-    >>> readfile('tools/example.txt')
+    >>> readfile('tests/example.txt')
     'Hello world!'
+
+    >>> readfile('doesnotexist.txt')
+    1
     """
     infile = path.realpath(infile)
     try:
         with open(infile, 'r') as f:
             data = f.read()
-    except IOError as ioerr:
-        logging.error('File error (readData): ' + str(ioerr))
-    return(data)
+        return(data)
+    except Exception as e:
+        logging.error('File error (readData): ' + str(e))
+        return 1
 
 
 def writefile(outfile, data):
@@ -111,15 +115,17 @@ def writefile(outfile, data):
     :rtype: int
     :example:
 
-    >>> writefile('tools/example.txt', 'Hello world!')
+    >>> writefile('tests/example.txt', 'Hello world!')
     0
     """
     outfile = path.realpath(outfile)
     try:
         with open(outfile, 'w') as f:
             f.write(data)
-    except IOError as ioerr:
-        logging.error('File error (writeData): ' + str(ioerr))
+        return 0
+    except Exception as e:
+        logging.error('File error (writeData): ' + str(e))
+        return 1
 
 
 def adjustrow(row):
