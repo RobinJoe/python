@@ -1,8 +1,0 @@
-actionid: doc
-msg: getenv
-cmdargs: ['/usr/bin/python', '-m', 'virtualenv', '--python', '/usr/bin/python', 'doc']
-env: {'VERSIONER_PYTHON_PREFER_32_BIT': 'no', 'TERM_PROGRAM_VERSION': '343.7', 'LOGNAME': 'bmoss', 'USER': 'bmoss', 'PATH': '/Users/bmoss/scripts/python/.tox/doc/bin:/Library/Frameworks/Python.framework/Versions/3.4/bin:/usr/local/apache-maven-3.3.1/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/bmoss/.local/bin:/Users/bmoss/bin', 'HOME': '/Users/bmoss', 'TERM_PROGRAM': 'Apple_Terminal', 'LANG': 'en_AU.UTF-8', 'TERM': 'xterm-256color', 'Apple_PubSub_Socket_Render': '/private/tmp/com.apple.launchd.6klogZjtS7/Render', 'VERSIONER_PYTHON_VERSION': '2.7', 'SHLVL': '1', 'SECURITYSESSIONID': '186a5', 'XPC_FLAGS': '0x0', 'PYTHONHASHSEED': '2794796295', 'TMPDIR': '/var/folders/7v/2ym60lp139v5wyzf0bslphq00000gn/T/', 'TERM_SESSION_ID': '37B12B23-92CE-466D-B82C-D48B8676D6CB', 'XPC_SERVICE_NAME': '0', 'SSH_AUTH_SOCK': '/private/tmp/com.apple.launchd.JBYNr81oc1/Listeners', 'VIRTUAL_ENV': '/Users/bmoss/scripts/python/.tox/doc', 'SHELL': '/bin/bash', '_': '/usr/local/bin/tox', 'OLDPWD': '/Users/bmoss/scripts', '__CF_USER_TEXT_ENCODING': '0x1F5:0x0:0x0', 'PWD': '/Users/bmoss/scripts/python', 'GIT_PROXY_COMMAND': '/Users/bmoss/bin/git-proxy.sh'}
-
-New python executable in /Users/bmoss/scripts/python/.tox/doc/bin/python
-Installing setuptools, pip, wheel...done.
-Running virtualenv with interpreter /usr/bin/python2.7
