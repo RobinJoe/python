@@ -49,7 +49,7 @@ def adjustrow(row, hw):
     next_row = []
     for entry in row:
         if len(entry) > hw[counter]:
-            if entry[hw[counter]] != " " and entry[hw[counter]-1] != " ":
+            if entry[hw[counter]] != " " and entry[hw[counter] - 1] != " ":
                 row[counter] = entry[:hw[counter]] + "\\"
             else:
                 row[counter] = entry[:hw[counter]]
@@ -65,7 +65,7 @@ def adjusttable(array):
     """Adjust table."""
     hw = []  # width of each column based on the headers
     for header in array[0]:
-        hw.append(len(header)+2)
+        hw.append(len(header) + 2)
     new_array = []
     for row in array:
         row, next_row = adjustrow(row, hw)
