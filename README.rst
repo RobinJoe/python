@@ -9,8 +9,8 @@ A collection of python scripts for automating various things.
 
 Full documentation: https://kallimachos.github.io/python/
 
-bugs.py
-~~~~~~~
+bugs
+~~~~
 
 Display GitHub issues across all user's repositories.
 
