@@ -141,21 +141,27 @@
             
   <div class="section" id="python-scripts-documentation">
 <h1>Python Scripts Documentation<a class="headerlink" href="#python-scripts-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Various helpful Python scripts.</p>
-<p><em>Last updated:</em> Jun 30, 2016</p>
+<p>A collection of python scripts for automating various things.</p>
+<p><em>Last updated:</em> Aug 16, 2016</p>
 <div class="section" id="module-bugs">
 <span id="bugs-py"></span><h2>bugs.py<a class="headerlink" href="#module-bugs" title="Permalink to this headline">¶</a></h2>
-<p>Display status of sites monitored by Uptimerobot on the command line.</p>
+<p>Display GitHub issues across all user&#8217;s repositories.</p>
 <dl class="function">
-<dt id="bugs.fetchkey">
-<code class="descclassname">bugs.</code><code class="descname">fetchkey</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bugs.html#fetchkey"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bugs.fetchkey" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fetch API key from file.</p>
+<dt id="bugs.api">
+<code class="descclassname">bugs.</code><code class="descname">api</code><span class="sig-paren">(</span><em>auth</em>, <em>req</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bugs.html#api"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bugs.api" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make GitHub API request.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="bugs.logconfig">
-<code class="descclassname">bugs.</code><code class="descname">logconfig</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bugs.html#logconfig"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bugs.logconfig" title="Permalink to this definition">¶</a></dt>
-<dd><p>Configure logging.</p>
+<dt id="bugs.fetchauth">
+<code class="descclassname">bugs.</code><code class="descname">fetchauth</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/bugs.html#fetchauth"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bugs.fetchauth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fetch authorization info from file.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="bugs.processargs">
+<code class="descclassname">bugs.</code><code class="descname">processargs</code><span class="sig-paren">(</span><em>auth</em>, <em>args</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bugs.html#processargs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bugs.processargs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Process command line arguments and launch related action.</p>
 </dd></dl>
 
 </div>

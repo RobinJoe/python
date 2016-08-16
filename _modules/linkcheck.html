@@ -135,11 +135,11 @@
 
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">glob</span> <span class="kn">import</span> <span class="n">iglob</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">glob</span> <span class="k">import</span> <span class="n">iglob</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
-<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 
 <span class="c1"># ----------------------------------------------------------</span>
 <span class="c1"># CLI colours:</span>
@@ -175,8 +175,8 @@
         <span class="n">allcount</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">url</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ulink</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;&quot;&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">HEADER</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;  Checking link: &quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">HEADER</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Checking link: &quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">redirects</span><span class="p">:</span>
                 <span class="n">status</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">status_code</span>
@@ -190,22 +190,22 @@
                 <span class="n">badlinks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">status</span> <span class="o">+</span> <span class="n">ENDCOLOR</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="n">url</span><span class="p">)</span>
                 <span class="n">badcount</span> <span class="o">+=</span> <span class="mi">1</span>
             <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;  Status: &quot;</span> <span class="o">+</span> <span class="n">status</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  Status: &quot;</span> <span class="o">+</span> <span class="n">status</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">WARNING</span> <span class="o">+</span> <span class="s2">&quot;Warning: &quot;</span> <span class="o">+</span> <span class="n">ENDCOLOR</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
             <span class="k">pass</span>
     <span class="k">if</span> <span class="n">count</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">badcount</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">HEADER</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">HEADER</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
             <span class="c1"># print(&quot;Total links: %s\n%sGood links: %s\n%sBad links: %s%s\n&quot;</span>
             <span class="c1"># % (allcount,OKGREEN,goodcount,FAIL,badcount,ENDCOLOR))</span>
-            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">Bad links: </span><span class="si">%s%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">FAIL</span><span class="p">,</span> <span class="n">badcount</span><span class="p">,</span> <span class="n">ENDCOLOR</span><span class="p">))</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">Bad links: </span><span class="si">%s%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">FAIL</span><span class="p">,</span> <span class="n">badcount</span><span class="p">,</span> <span class="n">ENDCOLOR</span><span class="p">))</span>
     <span class="k">elif</span> <span class="n">total</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">elif</span> <span class="n">badcount</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">HEADER</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">HEADER</span> <span class="o">+</span> <span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span> <span class="o">+</span> <span class="n">ENDCOLOR</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">badlink</span> <span class="ow">in</span> <span class="n">badlinks</span><span class="p">:</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">badlink</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">badlink</span><span class="p">)</span>
     <span class="k">global</span> <span class="n">sumall</span>
     <span class="n">sumall</span> <span class="o">+=</span> <span class="n">allcount</span>
     <span class="k">return</span> <span class="n">badcount</span></div>
@@ -215,7 +215,7 @@
     <span class="sd">&quot;&quot;&quot;Configure logging.&quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
         <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
-        <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
         <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">,</span>
         <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;/home/bmoss/scripts/python/linkcheck/debug.log&#39;</span><span class="p">,</span>
         <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
@@ -227,18 +227,18 @@
         <span class="n">prog</span><span class="o">=</span><span class="s2">&quot;linkcheck&quot;</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;Check ulinks in DocBook XML.&quot;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;INPUT&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;XML file or directory containing XML files&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--count&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-c&#39;</span><span class="p">,</span> <span class="s1">&#39;--count&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Print count of invalid links per file&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
-        <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--redirects&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="s1">&#39;-r&#39;</span><span class="p">,</span> <span class="s1">&#39;--redirects&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Follow 301 redirects and treat redirect target as link. SLOW.&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span> <span class="s1">&#39;--total&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span> <span class="s1">&#39;--total&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Print only the total number of invalid links&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-v&#39;</span><span class="p">,</span> <span class="s1">&#39;--verbose&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
-                        <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Verbose output&#39;</span><span class="p">)</span>
+                        <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Verbose output&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
     <span class="n">badtotal</span> <span class="o">=</span> <span class="mi">0</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Checking links...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checking links...</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">INPUT</span><span class="p">):</span>
         <span class="n">badtotal</span> <span class="o">=</span> <span class="n">checklinks</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">redirects</span><span class="p">,</span>
                               <span class="n">args</span><span class="o">.</span><span class="n">total</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
@@ -246,8 +246,8 @@
         <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">iglob</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">INPUT</span> <span class="o">+</span> <span class="s1">&#39;*.xml&#39;</span><span class="p">):</span>
             <span class="n">badtotal</span> <span class="o">+=</span> <span class="n">checklinks</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">count</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">redirects</span><span class="p">,</span>
                                    <span class="n">args</span><span class="o">.</span><span class="n">total</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span><span class="p">)</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Links checked: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sumall</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Broken links: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">badtotal</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Links checked: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sumall</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Broken links: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">badtotal</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 
            </div>

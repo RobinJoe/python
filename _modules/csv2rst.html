@@ -136,9 +136,9 @@
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">csv</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">path</span>
 
-<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="k">import</span> <span class="n">tabulate</span>
 
 <span class="n">home</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s2">&quot;~&quot;</span><span class="p">)</span>
 <span class="n">script_dir</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))</span>
@@ -211,20 +211,20 @@
 <div class="viewcode-block" id="buildtable"><a class="viewcode-back" href="../index.html#csv2rst.buildtable">[docs]</a><span class="k">def</span> <span class="nf">buildtable</span><span class="p">(</span><span class="n">infile</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">manual</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Build table.&quot;&quot;&quot;</span>
     <span class="n">array</span> <span class="o">=</span> <span class="n">readcsv</span><span class="p">(</span><span class="n">infile</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">manual</span> <span class="ow">is</span> <span class="bp">False</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">manual</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
         <span class="n">array</span> <span class="o">=</span> <span class="n">adjusttable</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
     <span class="n">rst_table</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s2">&quot;firstrow&quot;</span><span class="p">,</span> <span class="n">tablefmt</span><span class="o">=</span><span class="s2">&quot;grid&quot;</span><span class="p">)</span>
     <span class="c1"># , stralign=None)</span>
     <span class="k">if</span> <span class="n">outfile</span><span class="p">:</span>
         <span class="n">writerst</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">rst_table</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">rst_table</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">rst_table</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="logconfig"><a class="viewcode-back" href="../index.html#csv2rst.logconfig">[docs]</a><span class="k">def</span> <span class="nf">logconfig</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Configure logging.&quot;&quot;&quot;</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
-                        <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
                         <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">,</span>
                         <span class="n">filename</span><span class="o">=</span><span class="n">script_dir</span> <span class="o">+</span> <span class="s1">&#39;/debug.log&#39;</span><span class="p">,</span>
                         <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
@@ -236,9 +236,9 @@
                                      <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;Creates RST tables for</span>
 <span class="s1">                                     set widths.&#39;&#39;&#39;</span><span class="p">)</span>
     <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;INPUT&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;input CSV file&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;OUTPUT&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;OUTPUT&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s1">&#39;?&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;output RST file&#39;</span><span class="p">)</span>
-    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;--manual&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;--manual&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                         <span class="n">help</span><span class="o">=</span><span class="s1">&#39;reflow cells manually&#39;</span><span class="p">)</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
     <span class="n">buildtable</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">INPUT</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">OUTPUT</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">manual</span><span class="p">)</span>

@@ -126,18 +126,19 @@
 <span></span><span class="ch">#!/bin/python3</span>
 <span class="c1"># coding: utf-8</span>
 
-<span class="sd">&quot;&quot;&quot;Display status of sites monitored by Uptimerobot on the command line.&quot;&quot;&quot;</span>
+<span class="sd">&quot;&quot;&quot;Display GitHub issues across all user&#39;s repositories.&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
 
-<span class="kn">import</span> <span class="nn">requests</span>
+<span class="c1"># import requests</span>
+<span class="c1"># from os import path</span>
 
-<span class="n">HOST</span> <span class="o">=</span> <span class="s1">&#39;http://api.uptimerobot.com/getMonitors?apikey=&#39;</span>
-<span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;&amp;format=json&amp;noJsonCallback=1&#39;</span>
-<span class="n">KEYFILE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/scripts/python/uptime/pass.key&#39;</span><span class="p">)</span>
-<span class="n">LOGFILE</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="s1">&#39;~/scripts/python/uptime/output.log&#39;</span><span class="p">)</span>
+
+<span class="n">HOST</span> <span class="o">=</span> <span class="s1">&#39;https://api.github.com/&#39;</span>
+<span class="n">FORMAT</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+<span class="n">KEYFILE</span> <span class="o">=</span> <span class="s1">&#39;keys/bugs.json&#39;</span>
 <span class="n">status_code</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;0&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[94mpaused&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">:</span> <span class="s1">&#39;not checked yet&#39;</span><span class="p">,</span>
                <span class="s1">&#39;2&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[92mup&#39;</span><span class="p">,</span> <span class="s1">&#39;8&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[93mseems down&#39;</span><span class="p">,</span>
                <span class="s1">&#39;9&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[91mdown&#39;</span><span class="p">}</span>
@@ -153,46 +154,56 @@
 <span class="c1"># ----------------------------------------------------------</span>
 
 
-<div class="viewcode-block" id="fetchkey"><a class="viewcode-back" href="../index.html#bugs.fetchkey">[docs]</a><span class="k">def</span> <span class="nf">fetchkey</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Fetch API key from file.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="api"><a class="viewcode-back" href="../index.html#bugs.api">[docs]</a><span class="k">def</span> <span class="nf">api</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="n">req</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make GitHub API request.&quot;&quot;&quot;</span>
+    <span class="c1"># url = HOST + key + FORMAT</span>
+    <span class="c1"># try:</span>
+    <span class="c1">#     r = requests.get(url)</span>
+    <span class="c1">#     logging.debug(&#39;Content of request: &#39; + r.text)</span>
+    <span class="c1"># except Exception as e:</span>
+    <span class="c1">#     logging.error(e)</span>
+    <span class="c1">#     response = input(&#39;\nWebsite error\n&#39;)</span>
+    <span class="c1">#     exit(0)</span>
+    <span class="c1"># logging.debug(&#39;Attempting to load json&#39;)</span>
+    <span class="c1"># data = (json.loads(r.text))</span>
+    <span class="c1"># print(data)</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="fetchauth"><a class="viewcode-back" href="../index.html#bugs.fetchauth">[docs]</a><span class="k">def</span> <span class="nf">fetchauth</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Fetch authorization info from file.&quot;&quot;&quot;</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">KEYFILE</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">KEYFILE</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Open &#39;</span> <span class="o">+</span> <span class="n">KEYFILE</span><span class="p">)</span>
-            <span class="n">key</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;key fetched&#39;</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">IOError</span> <span class="k">as</span> <span class="n">ioerr</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;File error (fetchkey): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">ioerr</span><span class="p">))</span>
-    <span class="k">return</span> <span class="n">key</span></div>
+            <span class="n">info</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;auth info fetched: &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">info</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">info</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;File error (fetchkey): &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+        <span class="k">return</span> <span class="mi">1</span></div>
 
 
-<div class="viewcode-block" id="logconfig"><a class="viewcode-back" href="../index.html#bugs.logconfig">[docs]</a><span class="k">def</span> <span class="nf">logconfig</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Configure logging.&quot;&quot;&quot;</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">basicconfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">,</span>
-                        <span class="n">format</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%(asctime)s</span><span class="s1"> </span><span class="si">%(levelname)s</span><span class="s1"> </span><span class="si">%(message)s</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="n">datefmt</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M:%S&#39;</span><span class="p">,</span>
-                        <span class="n">filename</span><span class="o">=</span><span class="n">LOGFILE</span><span class="p">,</span>
-                        <span class="n">filemode</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">)</span></div>
+<div class="viewcode-block" id="processargs"><a class="viewcode-back" href="../index.html#bugs.processargs">[docs]</a><span class="k">def</span> <span class="nf">processargs</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Process command line arguments and launch related action.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;User is: &#39;</span> <span class="o">+</span> <span class="n">auth</span><span class="p">[</span><span class="s1">&#39;user&#39;</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;No request made.&#39;</span><span class="p">)</span></div>
 
 
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="n">logconfig</span><span class="p">()</span>
-    <span class="n">key</span> <span class="o">=</span> <span class="n">fetchkey</span><span class="p">()</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="n">HOST</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="n">FORMAT</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Content of request: &#39;</span> <span class="o">+</span> <span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="n">response</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Website error</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="nb">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Attempting to load json&#39;</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">))</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">monitor</span> <span class="ow">in</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;monitors&#39;</span><span class="p">][</span><span class="s1">&#39;monitor&#39;</span><span class="p">]:</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">status_code</span><span class="p">[</span><span class="n">monitor</span><span class="p">[</span><span class="s1">&#39;status&#39;</span><span class="p">]]</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span>
-              <span class="n">monitor</span><span class="p">[</span><span class="s1">&#39;alltimeuptimeratio&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;%</span><span class="se">\033</span><span class="s1">[0m &#39;</span> <span class="o">+</span>
-              <span class="n">monitor</span><span class="p">[</span><span class="s1">&#39;friendlyname&#39;</span><span class="p">])</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">auth</span> <span class="o">=</span> <span class="n">fetchauth</span><span class="p">()</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">prog</span><span class="o">=</span><span class="s2">&quot;bugs&quot;</span><span class="p">,</span>
+                                     <span class="n">description</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;Display GitHub issues</span>
+<span class="s1">                                     and PRs.&#39;&#39;&#39;</span><span class="p">)</span>
+    <span class="c1"># parser.add_argument(&#39;INPUT&#39;, type=str, nargs=&#39;+&#39;, help=&#39;RST file(s)&#39;)</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">add_mutually_exclusive_group</span><span class="p">()</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-u&#39;</span><span class="p">,</span> <span class="s1">&#39;--user&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                       <span class="n">help</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;Show authenticated user&#39;&#39;&#39;</span><span class="p">)</span>
+    <span class="n">group</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--org&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span>
+                       <span class="n">help</span><span class="o">=</span><span class="s1">&#39;&#39;&#39;Show all orgs for authenticated user&#39;&#39;&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="n">processargs</span><span class="p">(</span><span class="n">auth</span><span class="p">,</span> <span class="n">args</span><span class="p">)</span>
 </pre></div>
 
            </div>
