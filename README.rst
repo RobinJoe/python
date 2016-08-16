@@ -9,6 +9,12 @@ A collection of python scripts for automating various things.
 
 Full documentation: https://kallimachos.github.io/python/
 
+bugs.py
+~~~~~~~
+
+Display GitHub issues across all user's repositories.
+
+
 comma
 ~~~~~
 
@@ -37,19 +43,6 @@ linkcheck
 ~~~~~~~~~
 
 Check ulinks in DocBook XML file or directory of XML files.
-
-
-numerate
-~~~~~~~~
-
-Take doc text from a file or directly from the errata tool, clean the tags
-and invalid characters, and reorder the bugs numerically for each component.
-
-
-pressgang
-~~~~~~~~~
-
-Convert Docbook XML books to topics consumable by Pressgang.
 
 
 table

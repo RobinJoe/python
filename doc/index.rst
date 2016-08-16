@@ -2,7 +2,7 @@
 Python Scripts Documentation
 ============================
 
-Various helpful Python scripts.
+A collection of python scripts for automating various things.
 
 *Last updated:* |today|
 

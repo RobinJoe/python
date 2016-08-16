@@ -12,7 +12,7 @@ GITDIR=`git rev-parse --show-toplevel`
 
 # set source directories
 DOC='doc'
-SOURCE='scripts'
+SOURCE='source'
 CONFIG='tox.ini'
 
 # ensure master is up-to-date
@@ -33,7 +33,7 @@ cd $DOC
 make html
 
 # move html files to root directory
-mv -fv _build/html/* ../
+mv -fv _build/html/* $GITDIR/
 
 # remove source files
 cd $GITDIR
@@ -49,9 +49,9 @@ git checkout master
 cd $STARTDIR
 echo
 if test `tput -T $TERM colors` -lt 256; then
-    echo "Docs published to http://kallimachos.github.io/$BASEDIR."
+    echo "Docs published to http://kallimachos.github.io/$BASEDIR"
 else
     tput -T $TERM setaf 2
-    echo "Docs published to http://kallimachos.github.io/$BASEDIR."
+    echo "Docs published to http://kallimachos.github.io/$BASEDIR"
     tput -T $TERM sgr0
 fi
