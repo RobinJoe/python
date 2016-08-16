@@ -6,8 +6,8 @@ A collection of python scripts for automating various things.
 
 *Last updated:* |today|
 
-bugs.py
-~~~~~~~
+bugs
+~~~~
 
 .. automodule:: bugs
    :members:
