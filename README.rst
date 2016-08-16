@@ -5,6 +5,12 @@ python
 .. image:: https://travis-ci.org/kallimachos/python.svg?branch=master
    :target: https://travis-ci.org/kallimachos/python
 
+.. image:: https://img.shields.io/badge/Python-3.4-brightgreen.svg?style=flat
+   :target: http://python.org
+
+.. image:: http://img.shields.io/badge/license-GPL-blue.svg?style=flat
+   :target: http://opensource.org/licenses/GPL-3.0
+
 A collection of python scripts for automating various things.
 
 Full documentation: https://kallimachos.github.io/python/
