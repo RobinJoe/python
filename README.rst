@@ -7,6 +7,8 @@ python
 
 A collection of python scripts for automating various things.
 
+Full documentation: https://kallimachos.github.io/python/
+
 comma
 ~~~~~
 
