@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 if [ "$TRAVIS_REPO_SLUG" == "kallimachos/python" ] && \
     [ "$TRAVIS_PULL_REQUEST" == "false" ] && \
     [ "$TRAVIS_BRANCH" == "master" ]; then
